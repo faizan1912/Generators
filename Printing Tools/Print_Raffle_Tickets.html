@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Raffle Tickets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f3f3f3;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+        }
+        .print-btn {
+            background-color: #1E90FF;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Print Raffle Tickets</h2>
+    <form id="raffleForm">
+        <!-- Input fields for raffle details -->
+        <label for="raffleName">Raffle Name *</label>
+        <input type="text" id="raffleName" placeholder="Ex: Raffle action between friends" required onkeydown="focusNext(event)">
+        <label for="raffleDescription">Brief Description of the Raffle *</label>
+        <input type="text" id="raffleDescription" placeholder="Ex: Charity raffle in favor of the city's football team" required onkeydown="focusNext(event)">
+        <label for="raffleTickets">Number of Raffle Tickets (max 2000) *</label>
+        <input type="number" id="raffleTickets" max="2000" required onkeydown="focusNext(event)">
+        <label for="rafflePrize1">Raffle Prize (Item 1)*</label>
+        <input type="text" id="rafflePrize1" placeholder="Ex: A 23 inch TV" required onkeydown="focusNext(event)">
+        <!-- Additional raffle prize inputs -->
+        <!-- (Add other prize inputs here as per your original code) -->
+        <label for="raffleValue">Raffle Value *</label>
+        <input type="text" id="raffleValue" placeholder="Ex: 50.00" required onkeydown="focusNext(event)">
+        <label for="drawLocation">Draw Location *</label>
+        <input type="text" id="drawLocation" placeholder="Ex: In the town square" required onkeydown="focusNext(event)">
+        <label for="drawDate">Draw Date *</label>
+        <input type="date" id="drawDate" required onkeydown="focusNext(event)">
+        <label for="drawTime">Draw Time *</label>
+        <input type="time" id="drawTime" required onkeydown="focusNext(event)">
+
+        <div class="button-container">
+            <button type="button" class="print-btn" onclick="generateRaffleTickets()">Print Raffle Tickets</button>
+        </div>
+    </form>
+
+    <script>
+        function focusNext(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                let formElements = Array.from(document.querySelectorAll("#raffleForm input"));
+                let index = formElements.indexOf(event.target);
+                if (index >= 0 && index < formElements.length - 1) {
+                    formElements[index + 1].focus();
+                }
+            }
+        }
+
+        function generateRaffleTickets() {
+            const numTickets = parseInt(document.getElementById('raffleTickets').value);
+            const raffleName = document.getElementById('raffleName').value;
+            const raffleDescription = document.getElementById('raffleDescription').value;
+            const raffleValue = document.getElementById('raffleValue').value;
+            const drawLocation = document.getElementById('drawLocation').value;
+            const drawDate = document.getElementById('drawDate').value;
+            const drawTime = document.getElementById('drawTime').value;
+
+            // Simple alert as placeholder for ticket generation logic
+            alert(`Generating ${numTickets} raffle tickets for "${raffleName}". This may take a few seconds...`);
+
+            // Add ticket generation logic here if needed
+
+            // Trigger print preview
+            window.print();
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chassis Number Validator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+        .container h1 {
+            font-size: 22px;
+        }
+        .info-text {
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        .validate-link {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        input {
+            padding: 8px;
+            width: 100%;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Chassis Number Validator</h1>
+    <p class="info-text">
+        Typically, the chassis number is 17 characters long, although its length may vary depending on the country and vehicle manufacturer.
+        Please enter your chassis number below for validation. Also check out our 
+        <a class="validate-link" href="/generators/chassis_generator.html">Chassis Number Generator</a>.
+    </p>
+    
+    <!-- Input for chassis number -->
+    <input type="text" id="chassisNumber" placeholder="Enter Chassis Number">
+    
+    <!-- Validation button -->
+    <button onclick="validateChassisNumber()">Validate</button>
+    
+    <!-- Display validation result -->
+    <div class="result" id="resultText"></div>
+</div>
+
+<script>
+    // Function to validate chassis number
+    function validateChassisNumber() {
+        const chassisNumber = document.getElementById("chassisNumber").value;
+        const resultText = document.getElementById("resultText");
+        
+        // Check if chassis number has 17 characters
+        if (/^[A-HJ-NPR-Z0-9]{17}$/.test(chassisNumber)) {
+            resultText.innerText = "Valid Chassis Number";
+            resultText.style.color = "green";
+        } else {
+            resultText.innerText = "Invalid Chassis Number";
+            resultText.style.color = "red";
+        }
+    }
+</script>
+
+</body>
+</html>

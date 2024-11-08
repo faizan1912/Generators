@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chassis Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #generateButton {
+            background-color: #007BFF; /* Blue */
+        }
+
+        #generateButton:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        #copyButton {
+            background-color: #28a745; /* Green */
+        }
+
+        #copyButton:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #generateCopyButton {
+            background-color: #e1ad41; /* Mustard */
+        }
+
+        #generateCopyButton:hover {
+            background-color: #d29f3d; /* Darker mustard on hover */
+        }
+
+        #chassisDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .instructions {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chassis Generator</h1>
+        <p class="instructions">Click the "Generate Chassis" button to generate as many Chassis numbers as 
+            you want. Also check out our <a href="/validators/validate_chassis.html">Validate Chassis</a>.</p>
+        <div id="chassisDisplay"></div>
+        
+        <div class="button-container">
+            <button id="generateButton">Generate Chassis Number</button>
+            <button id="copyButton">Copy to Clipboard</button>
+            <button id="generateCopyButton" onclick="generateAndCopy()">Generate & Copy</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to generate a random chassis number
+        function generateChassisNumber() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let chassisNumber = "";
+            for (let i = 0; i < 17; i++) {
+                chassisNumber += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return chassisNumber;
+        }
+
+        // Function to display the generated chassis number
+        function displayChassisNumber() {
+            const chassisNumber = generateChassisNumber();
+            document.getElementById("chassisDisplay").innerText = `Chassis Number: ${chassisNumber}`;
+        }
+
+        // Function to copy the chassis number to the clipboard
+        function copyToClipboard() {
+            const chassisNumberText = document.getElementById("chassisDisplay").innerText;
+
+            // Create a temporary input element to hold the chassis number
+            const tempInput = document.createElement("input");
+            tempInput.value = chassisNumberText;
+            document.body.appendChild(tempInput);
+            
+            // Select the text and copy it
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+
+            // Alert to inform the user that the number has been copied
+            alert("Copied: " + chassisNumberText);
+        }
+
+        // Function to generate a custom number and copy it to the clipboard
+        function generateAndCopy() {
+            displayChassisNumber(); // Generate the custom number
+            copyToClipboard(); // Copy the generated number
+        }
+
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayChassisNumber;
+        document.getElementById("copyButton").onclick = copyToClipboard;
+
+        // Link for validating chassis
+        document.getElementById("validateChassisLink").onclick = function() {
+            alert("Redirecting to Validate Chassis..."); // Placeholder action for link
+        };
+    </script>
+</body>
+</html>

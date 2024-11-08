@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate PIS/PASEP Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        #pisResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate PIS/PASEP Number</h1>
+        <p>Enter or paste your PIS/PASEP number in the field below to validate! Check out our 
+            <a href="/Generators/PIS_PASEP_Generator.html">PIS/PASEP Generator</a>.</p>
+        <input type="text" id="pisInput" placeholder="Enter your PIS/PASEP number">
+        <button class="button validate-btn" onclick="validatePIS()">Validate</button>
+        <button class="button copy-btn" onclick="copyPIS()">Copy</button>
+        <div id="pisResult"></div>
+    </div>
+
+    <script>
+        // Function to validate PIS/PASEP number
+        function validatePIS() {
+            const pisNumber = document.getElementById('pisInput').value.replace(/\D/g, ''); // Remove non-numeric characters
+            const pisResult = document.getElementById('pisResult'); // Result display element
+
+            if (/^\d{11}$/.test(pisNumber)) { // PIS/PASEP must have 11 numeric digits
+                if (pisCheck(pisNumber)) {
+                    pisResult.innerText = "PIS/PASEP Number is valid!"; // Display valid message
+                    pisResult.style.color = "green"; // Change text color to green
+                } else {
+                    pisResult.innerText = "Invalid PIS/PASEP Number!"; // Display invalid message
+                    pisResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                pisResult.innerText = "Please enter a valid 11-digit PIS/PASEP number."; // Error message for invalid format
+                pisResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the PIS/PASEP number to clipboard
+        function copyPIS() {
+            const pisNumber = document.getElementById('pisInput').value; // Get input value
+
+            if (pisNumber) {
+                const tempInput = document.createElement("input");
+                tempInput.value = pisNumber;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + pisNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a PIS/PASEP number to copy."); // Alert if input is empty
+            }
+        }
+
+        // PIS/PASEP validation algorithm
+        function pisCheck(pis) {
+            const pisDigits = pis.split('').map(Number);
+            const length = pisDigits.length;
+
+            // Check if the number starts with a valid digit (1-9)
+            if (pisDigits[0] < 1 || pisDigits[0] > 9) {
+                return false;
+            }
+
+            // Validate the check digit using the PIS/PASEP calculation method
+            let sum = 0;
+            for (let i = 0; i < length - 1; i++) {
+                sum += pisDigits[i] * (length - i); // PIS/PASEP uses a weighted sum
+            }
+            const checkDigit = 11 - (sum % 11);
+            return checkDigit === pisDigits[length - 1] || (checkDigit === 10 && pisDigits[length - 1] === 0);
+        }
+    </script>
+</body>
+</html>

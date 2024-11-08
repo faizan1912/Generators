@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 350px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+        }
+        p {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 1em;
+            color: #333;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .button-blue { background-color: #007bff; color: #fff; }
+        .button-blue:hover { background-color: #0056b3; }
+        .button-green { background-color: #28a745; color: #fff; }
+        .button-green:hover { background-color: #218838; }
+        .button-rust { background-color: #b5651d; color: #fff; }
+        .button-rust:hover { background-color: #8b4513; }
+        .link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .checkbox-container label {
+            margin-left: 5px;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Credit Card Generator</h2>
+    <p>Create valid 16-digit credit card numbers here! You can customize the card according to the brand 
+        chosen in the filter. Also check out our <a href="/validators/validate_credit_card.html">Validate Credit Card</a>.</p>
+    
+    <label for="card-number">Card Number</label>
+    <input type="text" id="card-number" class="input-field" value="5454145091474471" readonly>
+    
+    <label for="expiration-date">Expiration Date</label>
+    <input type="text" id="expiration-date" class="input-field" value="02/09/2032" readonly>
+    
+    <label for="cvv">CVV</label>
+    <input type="text" id="cvv" class="input-field" value="454" readonly>
+    
+    <label for="brand">Flag</label>
+    <select id="brand" class="input-field">
+        <option value="random">Random</option>
+        <option value="visa">Visa</option>
+        <option value="mastercard">MasterCard</option>
+        <option value="amex">American Express</option>
+        <option value="discover">Discover</option>
+    </select>
+
+    <div class="checkbox-container">
+        <input type="checkbox" id="punctuate" onclick="togglePunctuation()">
+        <label for="punctuate">Add punctuation</label>
+    </div>
+
+    <button class="button button-blue" onclick="generateCard()">Generate</button>
+    <button class="button button-green" onclick="copyCard()">Copy</button>
+    <button class="button button-rust" onclick="generateAndCopy()">Generate & Copy</button>
+</div>
+
+<script>
+    function generateCard() {
+        const brands = {
+            visa: "4" + Math.random().toString().slice(2, 16),
+            mastercard: "5" + Math.random().toString().slice(2, 16),
+            amex: "3" + Math.floor(Math.random() * 3 + 7) + Math.random().toString().slice(2, 14),
+            discover: "6011" + Math.random().toString().slice(2, 14),
+            random: Math.random().toString().slice(2, 18)
+        };
+
+        const selectedBrand = document.getElementById("brand").value;
+        const cardNumber = (brands[selectedBrand] || brands['random']).padEnd(16, '0');
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 3);
+        const formattedDate = `${("0" + (expirationDate.getMonth() + 1)).slice(-2)}/${expirationDate.getFullYear().toString().slice(-2)}`;
+        const cvv = Math.floor(Math.random() * 900) + 100; // Random 3-digit CVV
+        
+        document.getElementById("card-number").value = cardNumber;
+        document.getElementById("expiration-date").value = formattedDate;
+        document.getElementById("cvv").value = cvv;
+
+        if (document.getElementById("punctuate").checked) {
+            togglePunctuation();
+        }
+    }
+
+    function copyCard() {
+        const cardData = `Card Number: ${document.getElementById("card-number").value}\nExpiration Date: ${document.getElementById("expiration-date").value}\nCVV: ${document.getElementById("cvv").value}`;
+        navigator.clipboard.writeText(cardData);
+        alert("Credit card details copied!");
+    }
+
+    function generateAndCopy() {
+        generateCard();
+        copyCard();
+    }
+
+    function togglePunctuation() {
+        const cardNumber = document.getElementById("card-number");
+        if (document.getElementById("punctuate").checked) {
+            cardNumber.value = cardNumber.value.match(/.{1,4}/g).join("-");
+        } else {
+            cardNumber.value = cardNumber.value.replace(/-/g, "");
+        }
+    }
+</script>
+
+</body>
+</html>

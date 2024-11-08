@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shuffle Letters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        select, label, input[type="checkbox"] {
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-blue {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-rust {
+            background-color: #b7410e;
+            color: white;
+        }
+
+        .btn-red {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shuffle Letters</h1>
+        <textarea id="textInput" placeholder="Type or paste your text or list to shuffle">hellow world</textarea>
+
+        <br>
+        <label for="separator">Choose a separator:</label>
+        <select id="separator">
+            <option value=" ">Space [ ]</option>
+            <option value=",">Comma [,]</option>
+            <option value=".">Point [.]</option>
+        </select>
+        <br><br>
+
+        <label for="keepOrder">Keep word order</label>
+        <input type="checkbox" id="keepOrder">
+        <br><br>
+
+        <!-- Button Group with Shuffle, Shuffle & Copy, Clean -->
+        <div class="button-group">
+            <button class="btn-blue" onclick="shuffleText()">Shuffle</button>
+            <button class="btn-rust" onclick="shuffleAndCopy()">Shuffle & Copy</button>
+            <button class="btn-red" onclick="clearText()">Clean</button>
+        </div>
+
+        <div class="result" id="shuffledResult">Result will appear here</div>
+    </div>
+
+    <script>
+        // Function to shuffle text
+        function shuffleText() {
+            const inputText = document.getElementById("textInput").value;
+            const separator = document.getElementById("separator").value;
+            const keepWordOrder = document.getElementById("keepOrder").checked;
+
+            let result;
+            if (keepWordOrder) {
+                // Shuffle letters within each word but keep word order
+                result = inputText.split(separator).map(word => shuffleWord(word)).join(separator);
+            } else {
+                // Shuffle entire text
+                result = shuffleWord(inputText.split(separator).join('')).split('').join(separator);
+            }
+
+            document.getElementById("shuffledResult").innerText = result;
+        }
+
+        // Helper function to shuffle individual words or text
+        function shuffleWord(word) {
+            let arr = word.split('');
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join('');
+        }
+
+        // Function to shuffle and copy text to clipboard
+        function shuffleAndCopy() {
+            shuffleText(); // Shuffle text first
+            const shuffledText = document.getElementById("shuffledResult").innerText;
+            navigator.clipboard.writeText(shuffledText)
+                .then(() => {
+                    alert("Shuffled text copied to clipboard!");
+                })
+                .catch(err => {
+                    alert("Failed to copy text: " + err);
+                });
+        }
+
+        // Function to clear input and result fields
+        function clearText() {
+            document.getElementById("textInput").value = '';
+            document.getElementById("shuffledResult").innerText = 'Result will appear here';
+        }
+    </script>
+</body>
+</html>

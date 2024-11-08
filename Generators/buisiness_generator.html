@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Data Generator</title>
+    <style>
+        /* Styling for the body of the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Container for the content */
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 500px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        /* Specific button colors */
+        #generateButton {
+            background-color: #007bff; /* Blue */
+        }
+        #generateButton:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        #copyButton {
+            background-color: #28a745; /* Green */
+        }
+        #copyButton:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .generate-copy-button {
+            background-color: #b83a28; /* Rust color */
+        }
+        .generate-copy-button:hover {
+            background-color: #9a3222; /* Darker rust on hover */
+        }
+
+        /* Display section for company data */
+        #companyDisplay {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        /* Style for headers within the data display */
+        .data-header {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Style for each data field within the display */
+        .data-field {
+            margin-bottom: 5px;
+        }
+
+        /* Increased width for the select box */
+        select {
+            width: 100%; /* Full width */
+            padding: 10px; /* Padding for better touch */
+            margin-bottom: 20px; /* Space below the select */
+            border: 1px solid #ccc; /* Border for the select */
+            border-radius: 5px; /* Rounded corners */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Business Data Generator</h1>
+        <p>Click the button below to generate complete company data. You can use the filter to 
+            customize the data generated.</p>
+
+        <p>State of origin of the CPF</p>
+        <select id="stateSelect">
+            <option value="BR">BR</option>
+            <option value="AC">AC</option>
+            <option value="AL">AL</option>
+            <option value="AP">AP</option>
+            <option value="BA">BA</option>
+            <option value="CE">CE</option>
+            <option value="DF">DF</option>
+            <option value="ES">ES</option>
+            <option value="GO">GO</option>
+            <option value="MA">MA</option>
+            <option value="MT">MT</option>
+            <option value="MS">MS</option>
+            <option value="MG">MG</option>
+            <option value="PA">PA</option>
+            <option value="PB">PB</option>
+            <option value="PR">PR</option>
+            <option value="PE">PE</option>
+            <option value="PI">PI</option>
+            <option value="RJ">RJ</option>
+            <option value="RN">RN</option>
+            <option value="RS">RS</option>
+            <option value="RO">RO</option>
+            <option value="RR">RR</option>
+            <option value="SC">SC</option>
+            <option value="SP">SP</option>
+            <option value="SE">SE</option>
+            <option value="TO">TO</option>
+        </select>
+        <!-- Div to display the generated company data -->
+        <div id="companyDisplay"></div>
+        <!-- Buttons for generating, copying and generating + copying data -->
+        <button id="generateButton">Generate Data</button>
+        <button id="copyButton">Copy to Clipboard</button>
+        <button class="generate-copy-button" onclick="generateAndCopy()">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Function to pick a random item from a given list (used to randomly select data)
+        function generateRandomData(list) {
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        // Function to generate a set of random company data
+        function generateCompanyData() {
+            // Defining sample data for company names, trade names, partners, etc.
+            const companyNames = ["Billé Auzier Auto Parts LTDA", "Melo e Silva Comércio LTDA", "Santos Solutions"];
+            const tradeNames = ["Billé Auto Parts", "Silva Tech", "Santos Solutions"];
+            // Generate random CNPJ number and IE (similar to tax IDs)
+            const cnpj = Math.floor(Math.random() * 100000000000000).toString().padStart(14, '0');
+            const ie = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+            // Fixed date of opening and random number of employees
+            const openingDate = "06/26/2011";
+            const employees = Math.floor(50 + Math.random() * 500);
+            // Fixed contact information
+            const phone = "(68) 3535-5225";
+            const cell = "(68) 97932-3219";
+            const website = "www.autobille.com.br";
+            const email = "auto.bille@geradornv.com.br";
+            // Fixed partner data
+            const partner1 = { name: "Marcy Magalhães Billé", cpf: "81734348674", participation: "64%" };
+            const partner2 = { name: "Renan Dantas Auzier", cpf: "83338194862", participation: "36%" };
+            // Fixed address details, while the state is fetched from the selected option
+            const cep = "69919-078";
+            const address = "Palotina Street";
+            const neighborhood = "Palm Tree Park";
+            const city = "White River";
+            const state = document.getElementById("stateSelect").value;
+
+            // Returning an object with all the generated company data
+            return {
+                companyName: generateRandomData(companyNames),
+                tradeName: generateRandomData(tradeNames),
+                cnpj,
+                ie,
+                openingDate,
+                employees,
+                phone,
+                cell,
+                website,
+                email,
+                partners: [partner1, partner2],
+                address: { cep, address, neighborhood, city, state }
+            };
+        }
+
+        // Function to display the generated company data in the HTML
+        function displayCompanyData() {
+            // Fetch the generated data
+            const companyData = generateCompanyData();
+            // Update the inner HTML of the display section with company data
+            document.getElementById("companyDisplay").innerHTML = 
+                `<div class="data-header">Company Data</div>
+                <div class="data-field"><strong>Company Name:</strong> ${companyData.companyName}</div>
+                <div class="data-field"><strong>Trade Name:</strong> ${companyData.tradeName}</div>
+                <div class="data-field"><strong>CNPJ:</strong> ${companyData.cnpj}</div>
+                <div class="data-field"><strong>IE:</strong> ${companyData.ie}</div>
+                <div class="data-field"><strong>Opening Date:</strong> ${companyData.openingDate}</div>
+                <div class="data-field"><strong>Number of Employees:</strong> ${companyData.employees}</div>
+                <div class="data-field"><strong>Telephone:</strong> ${companyData.phone}</div>
+                <div class="data-field"><strong>Cell Phone:</strong> ${companyData.cell}</div>
+                <div class="data-field"><strong>Website:</strong> ${companyData.website}</div>
+                <div class="data-field"><strong>Email:</strong> ${companyData.email}</div>
+                <div class="data-header">Partners</div>
+                <div class="data-field"><strong>Name:</strong> ${companyData.partners[0].name}</div>
+                <div class="data-field"><strong>CPF:</strong> ${companyData.partners[0].cpf}</div>
+                <div class="data-field"><strong>Participation:</strong> ${companyData.partners[0].participation}</div>
+                <div class="data-field"><strong>Name:</strong> ${companyData.partners[1].name}</div>
+                <div class="data-field"><strong>CPF:</strong> ${companyData.partners[1].cpf}</div>
+                <div class="data-field"><strong>Participation:</strong> ${companyData.partners[1].participation}</div>
+                <div class="data-header">Address</div>
+                <div class="data-field"><strong>CEP:</strong> ${companyData.address.cep}</div>
+                <div class="data-field"><strong>Address:</strong> ${companyData.address.address}</div>
+                <div class="data-field"><strong>Neighborhood:</strong> ${companyData.address.neighborhood}</div>
+                <div class="data-field"><strong>City:</strong> ${companyData.address.city}</div>
+                <div class="data-field"><strong>State:</strong> ${companyData.address.state}</div>`;
+        }
+
+        // Function to copy generated data to the clipboard
+        function copyToClipboard() {
+            const displayText = document.getElementById("companyDisplay").innerText;
+            navigator.clipboard.writeText(displayText).then(() => {
+                alert("Company data copied to clipboard!");
+            }, () => {
+                alert("Failed to copy data.");
+            });
+        }
+
+        // Function to generate and copy company data to clipboard
+        function generateAndCopy() {
+            displayCompanyData();
+            copyToClipboard();
+        }
+
+        // Event listeners for button clicks
+        document.getElementById("generateButton").addEventListener("click", displayCompanyData);
+        document.getElementById("copyButton").addEventListener("click", copyToClipboard);
+    </script>
+</body>
+</html>

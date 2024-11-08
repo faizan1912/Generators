@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher | Encode and Decode</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            height: 100px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Caesar Cipher | Encode and Decode</h1>
+        <p>To encode or decode your message, simply enter the text in the corresponding field below and choose an offset value.</p>
+
+        <textarea id="encodeInput" placeholder="Type here to encode"></textarea>
+        <input type="number" id="encodeShift" placeholder="Right shift (0-26)" value="3" min="0" max="26">
+        
+        <div class="result" id="encodedOutput">Encoded message will be here</div>
+        <button onclick="encodeText()">Encode</button>
+
+        <textarea id="decodeInput" placeholder="Type here to decode"></textarea>
+        <input type="number" id="decodeShift" placeholder="Right shift (0-26)" value="3" min="0" max="26">
+        
+        <div class="result" id="decodedOutput">Decoded message will be here</div>
+        <button onclick="decodeText()">Decode</button>
+    </div>
+
+    <script>
+        // Caesar Cipher encode function
+        function encodeText() {
+            const input = document.getElementById("encodeInput").value;
+            const shift = parseInt(document.getElementById("encodeShift").value);
+            document.getElementById("encodedOutput").innerText = caesarCipher(input, shift);
+        }
+
+        // Caesar Cipher decode function
+        function decodeText() {
+            const input = document.getElementById("decodeInput").value;
+            const shift = parseInt(document.getElementById("decodeShift").value);
+            document.getElementById("decodedOutput").innerText = caesarCipher(input, -shift);
+        }
+
+        // Caesar Cipher function to encode/decode
+        function caesarCipher(str, shift) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            shift = shift % 26;
+            let result = '';
+
+            for (let i = 0; i < str.length; i++) {
+                const char = str[i];
+                const isLower = char === char.toLowerCase();
+                const upperChar = char.toUpperCase();
+
+                if (alphabet.includes(upperChar)) {
+                    let newIndex = (alphabet.indexOf(upperChar) + shift) % 26;
+                    if (newIndex < 0) newIndex += 26;
+                    result += isLower ? alphabet[newIndex].toLowerCase() : alphabet[newIndex];
+                } else {
+                    result += char;
+                }
+            }
+            return result;
+        }
+    </script>
+</body>
+</html>

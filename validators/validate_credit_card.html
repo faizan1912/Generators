@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .description {
+            margin-bottom: 20px;
+        }
+
+        .description a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .description a:hover {
+            text-decoration: underline;
+        }
+
+        #cardResult {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Description Section -->
+        <div class="description">
+            <h2>Validate Credit Card</h2>
+            <p>Validate your 16-digit credit card number here in a simple way. To do this, simply enter the number in the field below. We do not save the numbers entered here! Also check out our 
+            <a href="/Generators/credit_card_generator.html">Credit Card Generator</a>.</p>
+        </div>
+
+        <h1>Credit Card Validation</h1>
+        <p>Enter your Credit Card number to validate</p>
+        <input type="text" id="cardInput" placeholder="Enter 16-digit Credit Card number">
+        <button class="button validate-btn" onclick="validateCreditCard()">Validate</button>
+
+        <div id="cardResult"></div>
+    </div>
+
+    <script>
+        // Function to validate the credit card number using Luhn's Algorithm
+        function validateCreditCard() {
+            // Get the credit card number from the input field and remove any spaces
+            const cardNumber = document.getElementById('cardInput').value.replace(/\s+/g, '');
+            const cardResult = document.getElementById('cardResult'); // Get the element to display results
+            
+            // Check if the card number is a valid 16-digit number
+            if (/^\d{16}$/.test(cardNumber)) {
+                // Validate the number using Luhn's algorithm
+                if (luhnCheck(cardNumber)) {
+                    cardResult.innerText = "Credit Card Number is valid!"; // Display valid message
+                    cardResult.style.color = "green"; // Change text color to green
+                } else {
+                    cardResult.innerText = "Invalid Credit Card Number!"; // Display invalid message
+                    cardResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                cardResult.innerText = "Please enter a valid 16-digit number."; // Error message for invalid format
+                cardResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function implementing Luhn's Algorithm to check the validity of the credit card number
+        function luhnCheck(cardNumber) {
+            let sum = 0; // Initialize the sum
+            let shouldDouble = false; // Flag to determine if digit should be doubled
+            
+            // Iterate over the card number from right to left
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber[i]); // Convert character to an integer
+                
+                // If the digit should be doubled
+                if (shouldDouble) {
+                    digit *= 2; // Double the digit
+                    if (digit > 9) digit -= 9; // If the result is greater than 9, subtract 9
+                }
+
+                sum += digit; // Add the digit (or modified digit) to the sum
+                shouldDouble = !shouldDouble; // Toggle the flag for the next iteration
+            }
+            // The card number is valid if the sum modulo 10 is 0
+            return sum % 10 === 0;
+        }
+    </script>
+</body>
+</html>

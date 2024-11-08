@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNPJ Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block; /* Align buttons in a single line */
+        }
+
+        #generateButton {
+            background-color: #28a745; /* Green color */
+        }
+
+        #generateButton:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #copyButton {
+            background-color: #007bff; /* Blue color */
+        }
+
+        #copyButton:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        #generateAndCopyButton {
+            background-color: #856404; /* Rust color */
+        }
+
+        #generateAndCopyButton:hover {
+            background-color: #7c6c00; /* Darker rust on hover */
+        }
+
+        #cnpjDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #includePunctuation {
+            margin: 10px;
+        }
+
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center the buttons */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CNPJ Generator</h1>
+        <p>Generate as many National Registry of Legal Entities (CNPJ) numbers as you want here. To generate,
+             simply click on "Generate CNPJ". You can also generate and copy to your clipboard by pressing the
+              "Enter" shortcut key. Also check out our <a href="/validators/validate_CNPj.html" style="color: #007bff; text-decoration: none;">Validate CNPJ</a>.</p>
+
+        <input type="checkbox" id="includePunctuation" onclick="togglePunctuation()"> Include punctuation
+        <div id="cnpjDisplay"></div>
+        
+        <div class="button-container">
+            <button id="generateButton">Generate CNPJ</button>
+            <button id="copyButton">Copy to Clipboard</button>
+            <button id="generateAndCopyButton" onclick="generateAndCopy()">Generate & Copy</button>
+        </div>
+    </div>
+
+    <script>
+        // Variable to track whether punctuation should be included in the generated CNPJ number
+        let includePunctuation = false; 
+        
+        // Function to generate a random CNPJ number
+        function generateCNPJ() {
+            let cnpj = ''; // Initialize an empty string to hold the CNPJ number
+            
+            // Generate 12 random digits
+            for (let i = 0; i < 12; i++) {
+                cnpj += Math.floor(Math.random() * 10).toString(); // Concatenate a random digit (0-9) to the CNPJ string
+            }
+            
+            cnpj += calculateCNPJDigits(cnpj); // Calculate and add the CNPJ check digits (13th and 14th digits)
+            return formatCNPJ(cnpj); // Format the CNPJ based on the checkbox state (punctuation included or not)
+        }
+    
+        // Function to calculate the CNPJ check digits
+        function calculateCNPJDigits(cnpj) {
+            let sum = 0; // Variable to hold the sum of weighted digits
+            let weight = 5; // Initial weight for the first check digit calculation
+    
+            // Loop through the first 12 digits to calculate the first check digit
+            for (let i = 0; i < 12; i++) {
+                sum += parseInt(cnpj[i]) * weight; // Multiply the digit by its weight and add to the sum
+                weight = weight === 2 ? 9 : weight - 1; // Update the weight for the next digit (weight cycles from 5 to 2)
+            }
+            
+            // Calculate the first check digit based on the sum
+            const firstDigit = (sum % 11 < 2) ? 0 : 11 - (sum % 11);
+            cnpj += firstDigit; // Append the first check digit to the CNPJ string
+            sum = 0; // Reset the sum for the second check digit calculation
+            weight = 6; // Initial weight for the second check digit calculation
+    
+            // Loop through the first 13 digits to calculate the second check digit
+            for (let i = 0; i < 13; i++) {
+                sum += parseInt(cnpj[i]) * weight; // Multiply the digit by its weight and add to the sum
+                weight = weight === 2 ? 9 : weight - 1; // Update the weight for the next digit
+            }
+            
+            // Calculate the second check digit based on the sum
+            const secondDigit = (sum % 11 < 2) ? 0 : 11 - (sum % 11);
+            return firstDigit.toString() + secondDigit.toString(); // Return the two check digits as a string
+        }
+    
+        // Function to format the CNPJ number based on whether punctuation is included
+        function formatCNPJ(cnpj) {
+            // Check if the punctuation should be included
+            if (includePunctuation) {
+                // Format CNPJ with punctuation
+                return `${cnpj.slice(0, 2)}.${cnpj.slice(2, 5)}.${cnpj.slice(5, 8)}/${cnpj.slice(8, 12)}-${cnpj.slice(12)}`;
+            }
+            return cnpj; // Return plain CNPJ if not including punctuation
+        }
+    
+        // Function to display the generated CNPJ number on the webpage
+        function displayCNPJ() {
+            const cnpj = generateCNPJ(); // Generate a new CNPJ number
+            document.getElementById("cnpjDisplay").innerText = `CNPJ: ${cnpj}`; // Display the generated CNPJ number
+            return cnpj; // Return the generated CNPJ number
+        }
+    
+        // Function to copy the CNPJ number to the clipboard
+        function copyToClipboard(cnpj) {
+            // Create a temporary input element to hold the CNPJ number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = cnpj; // Set the value of the temporary input to the CNPJ number
+            document.body.appendChild(tempInput); // Append the input to the body
+            
+            // Select the text in the temporary input and copy it
+            tempInput.select();
+            document.execCommand("copy"); // Copy the selected text to the clipboard
+    
+            // Remove the temporary input element from the body
+            document.body.removeChild(tempInput);
+    
+            // Alert to inform the user that the CNPJ has been copied
+            alert("Copied: " + cnpj);
+        }
+    
+        // Function to generate and copy the CNPJ number
+        function generateAndCopy() {
+            const cnpj = displayCNPJ(); // Generate and display the CNPJ number
+            copyToClipboard(cnpj); // Copy the displayed CNPJ number to the clipboard
+        }
+    
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayCNPJ; // Set up the click event for the Generate button
+        document.getElementById("copyButton").onclick = function() {
+            const cnpj = document.getElementById("cnpjDisplay").innerText.replace('CNPJ: ', ''); // Get displayed CNPJ number
+            if (cnpj) {
+                copyToClipboard(cnpj); // Copy to clipboard if there is a CNPJ number displayed
+            } else {
+                alert("Please generate a CNPJ number first."); // Alert if no CNPJ number is generated
+            }
+        }; // Set up the click event for the Copy button
+    
+        // Allow generating CNPJ with the Enter key
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                generateAndCopy(); // Generate and copy when Enter is pressed
+            }
+        });
+    
+        // Function to toggle punctuation inclusion
+        function togglePunctuation() {
+            includePunctuation = document.getElementById("includePunctuation").checked; // Update punctuation status based on checkbox state
+            displayCNPJ(); // Display the CNPJ with updated punctuation status
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weeks Calculator | Week Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            margin: 10px 0;
+        }
+
+        input[type="date"], input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+
+        .calendar-icon {
+            cursor: pointer;
+            margin-left: -35px;
+            margin-top: 10px;
+            position: relative;
+            top: 8px;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .result-container {
+            font-size: 1.5em;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin: 20px 0;
+            min-height: 40px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weeks Calculator | Week Counter</h1>
+        <p>To calculate the number of weeks, enter the period below, informing the start date and end date, and click on "Calculate".</p>
+
+        <h3>Start Date</h3>
+        <div>
+            <input type="date" id="startDate">
+            <span class="calendar-icon" onclick="document.getElementById('startDate').focus()">🗓️</span>
+        </div>
+
+        <h3>End Date</h3>
+        <div>
+            <input type="date" id="endDate">
+            <span class="calendar-icon" onclick="document.getElementById('endDate').focus()">🗓️</span>
+        </div>
+
+        <button onclick="calculateWeeks()">Calculate</button>
+
+        <div class="result-container" id="result">Busy weeks: 0 weeks</div>
+    </div>
+
+    <script>
+        function calculateWeeks() {
+            const startDateInput = document.getElementById("startDate").value;
+            const endDateInput = document.getElementById("endDate").value;
+
+            if (!startDateInput || !endDateInput) {
+                document.getElementById("result").textContent = "Please select both start and end dates.";
+                return;
+            }
+
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+
+            const timeDifference = endDate - startDate;
+            const weeksDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7));
+            document.getElementById("result").textContent = `Busy weeks: ${weeksDifference} weeks`;
+        }
+    </script>
+</body>
+</html>

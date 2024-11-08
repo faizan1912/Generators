@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Validator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Result message style */
+        #certificateResult {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Certificate</h1>
+        <p>Enter or paste the Certificate number in the field below to validate! It is worth mentioning that 
+            validation only verifies certificates in the new format, issued from 2010 onwards. Also check out
+             our <a href="/Generators/certificate_generator.html">Certificate Generator</a>.</p>
+
+        <input type="text" id="certificateNumber" placeholder="Enter your Certificate number" maxlength="20">
+        <button class="button validate-btn" onclick="validateCertificate()">Validate</button>
+        <div id="certificateResult"></div>
+    </div>
+
+    <script>
+        // Function to validate the certificate number
+        function validateCertificate() {
+            const certificateNumber = document.getElementById("certificateNumber").value; // Get the entered certificate number
+            const certificateResult = document.getElementById("certificateResult"); // Get the result display element
+            
+            // Check if the certificate number is in the expected format (example: 20 characters long)
+            if (/^\w{1,20}$/.test(certificateNumber)) {
+                // Additional logic to validate the certificate can go here
+                // For this example, we'll just simulate a valid check
+                if (certificateNumber.length >= 10) { // Assuming valid if length is at least 10
+                    certificateResult.innerText = "Certificate Number is valid!"; // Display valid message
+                    certificateResult.style.color = "green"; // Change text color to green
+                } else {
+                    certificateResult.innerText = "Invalid Certificate Number!"; // Display invalid message
+                    certificateResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                certificateResult.innerText = "Please enter a valid Certificate number."; // Error message for invalid format
+                certificateResult.style.color = "red"; // Change text color to red
+            }
+        }
+    </script>
+</body>
+</html>

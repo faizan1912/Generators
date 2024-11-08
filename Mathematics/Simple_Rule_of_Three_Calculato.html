@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Rule of Three Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .calculator-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Rule of Three Calculator</h1>
+        <p>To calculate the Rule of Three, enter the data in the fields below and click "Calculate".</p>
+        
+        <div class="calculator-box">
+            <input type="number" id="value1" placeholder="Enter first value " required>
+            <input type="number" id="value2" placeholder="Enter second value" required>
+            <input type="number" id="value3" placeholder="Enter third value " required>
+            <input type="number" id="result" placeholder="Result will be here" disabled>
+            <button onclick="calculateRuleOfThree()">Calculate</button>
+        </div>
+    </div>
+
+    <script>
+        function calculateRuleOfThree() {
+            const value1 = parseFloat(document.getElementById("value1").value);
+            const value2 = parseFloat(document.getElementById("value2").value);
+            const value3 = parseFloat(document.getElementById("value3").value);
+            // Calculate using the formula: (value2 * value3) / value1
+            const result = (value2 * value3) / value1;
+            document.getElementById("result").value = result.toFixed(2); // Display result in the input field
+        }
+    </script>
+</body>
+</html>

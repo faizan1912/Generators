@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .input-field {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        button#generate {
+            background-color: #007bff; /* Blue */
+        }
+        button#copy {
+            background-color: #28a745; /* Green */
+        }
+        button#newLink {
+            background-color: #007bff; /* Blue */
+        }
+        button#openLink {
+            background-color: #ffcc00; /* Mustard */
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #2d72d9;
+        }
+        .tick {
+            color: #28a745; /* Green for tick */
+            font-size: 1.5em;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Telegram Link Generator</h2>
+        <div class="input-field">
+            <p>Username</p>
+            <input type="text" id="username" placeholder="Enter username">
+        </div>
+        
+        <button id="generate" onclick="generateLink()">Generate Link</button>
+
+        <div class="result" id="resultDisplay"></div>
+        <span class="tick" id="successTick">✔️</span>
+        
+        <div id="buttonContainer" style="display:none;">
+            <button id="copy" onclick="copyLink()">Copy Link</button>
+            <button id="newLink" onclick="clearFields()">Generate New Link</button>
+            <button id="openLink" onclick="openLink()">Open Link in New Tab</button>
+        </div>
+    </div>
+
+    <script>
+        let generatedLink = '';
+
+        function generateLink() {
+            const username = document.getElementById('username').value.trim();
+            const resultDisplay = document.getElementById('resultDisplay');
+            const successTick = document.getElementById('successTick');
+            const buttonContainer = document.getElementById('buttonContainer');
+
+            // Reset the display
+            successTick.style.display = 'none';
+            resultDisplay.textContent = '';
+            buttonContainer.style.display = 'none';
+
+            if (username) {
+                generatedLink = `https://t.me/${username}`;
+                resultDisplay.textContent = `Link generated: ${generatedLink}`;
+                successTick.style.display = 'inline'; // Show tick
+                buttonContainer.style.display = 'block'; // Show buttons
+            } else {
+                alert("Please enter a username.");
+            }
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(generatedLink).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        function clearFields() {
+            document.getElementById('username').value = '';
+            document.getElementById('resultDisplay').textContent = '';
+            document.getElementById('successTick').style.display = 'none';
+            document.getElementById('buttonContainer').style.display = 'none';
+        }
+
+        function openLink() {
+            window.open(generatedLink, '_blank');
+        }
+    </script>
+</body>
+</html>

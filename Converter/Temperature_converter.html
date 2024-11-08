@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .input-field {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Temperature Converter</h2>
+        <div class="input-field">
+            <p>Fahrenheit (ºF)</p>
+            <input type="number" id="fahrenheit" placeholder="Enter temperature in Fahrenheit" oninput="convertFromFahrenheit()">
+        </div>
+        <div class="input-field">
+            <p>Celsius (ºC)</p>
+            <input type="number" id="celsius" placeholder="Enter temperature in Celsius" oninput="convertFromCelsius()">
+        </div>
+        <div class="input-field">
+            <p>Kelvin (K)</p>
+            <input type="number" id="kelvin" placeholder="Enter temperature in Kelvin" oninput="convertFromKelvin()">
+        </div>
+    </div>
+
+    <script>
+        function convertFromFahrenheit() {
+            const fahrenheit = parseFloat(document.getElementById('fahrenheit').value);
+            const celsiusInput = document.getElementById('celsius');
+            const kelvinInput = document.getElementById('kelvin');
+
+            if (!isNaN(fahrenheit)) {
+                const celsius = (fahrenheit - 32) * 5/9;
+                const kelvin = celsius + 273.15;
+                celsiusInput.value = celsius.toFixed(2); // Convert to Celsius
+                kelvinInput.value = kelvin.toFixed(2); // Convert to Kelvin
+            } else {
+                celsiusInput.value = '';
+                kelvinInput.value = '';
+            }
+        }
+
+        function convertFromCelsius() {
+            const celsius = parseFloat(document.getElementById('celsius').value);
+            const fahrenheitInput = document.getElementById('fahrenheit');
+            const kelvinInput = document.getElementById('kelvin');
+
+            if (!isNaN(celsius)) {
+                const fahrenheit = (celsius * 9/5) + 32;
+                const kelvin = celsius + 273.15;
+                fahrenheitInput.value = fahrenheit.toFixed(2); // Convert to Fahrenheit
+                kelvinInput.value = kelvin.toFixed(2); // Convert to Kelvin
+            } else {
+                fahrenheitInput.value = '';
+                kelvinInput.value = '';
+            }
+        }
+
+        function convertFromKelvin() {
+            const kelvin = parseFloat(document.getElementById('kelvin').value);
+            const fahrenheitInput = document.getElementById('fahrenheit');
+            const celsiusInput = document.getElementById('celsius');
+
+            if (!isNaN(kelvin)) {
+                const celsius = kelvin - 273.15;
+                const fahrenheit = (celsius * 9/5) + 32;
+                celsiusInput.value = celsius.toFixed(2); // Convert to Celsius
+                fahrenheitInput.value = fahrenheit.toFixed(2); // Convert to Fahrenheit
+            } else {
+                fahrenheitInput.value = '';
+                celsiusInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>

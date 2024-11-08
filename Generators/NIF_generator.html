@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Identification Number (NIF) Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Generate button ka rang blue */
+        #generateButton {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #generateButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Copy button ka rang green */
+        #copyButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #copyButton:hover {
+            background-color: #218838;
+        }
+
+        /* Generate & Copy button ka rang light blue */
+        #generateCopyButton {
+            background-color: #bb5808;
+            color: white;
+        }
+
+        #generateCopyButton:hover {
+            background-color: #f1720a;
+        }
+
+        #nifDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #entitySelect {
+            margin: 10px 0;
+            width: 200px;
+            height: 30px;
+            border: 2px solid black;
+        }
+
+        /* Punctuation ko next line pe laya gaya */
+        #includePunctuationLabel {
+            display: block;
+            margin: 10px 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><strong>Tax Identification Number (NIF) Generator</strong></h1>
+        <p>NIF is the acronym for "Número de Identificação Fiscal" (Tax Identification Number) in Portugal.
+             It is an identification number assigned to each Portuguese citizen and companies for 
+             tax and administrative purposes. Click the button below to generate as many valid NIF
+              numbers as you want! You can also choose the entity category if you wish. Also check out our <a href="/validators/validate_NIF.html"> NIF validate.</a></p>
+
+        <p>Entity Category</p>
+        <select id="entitySelect">
+            <option value="Random">Random</option>
+            <option value="Single person">Single person (1)</option>
+            <option value="Public Legal Entity">Public Legal Entity (6)</option>
+            <option value="Non-Resident">Non-Resident (3)</option>
+            <option value="Legal Entity">Legal Entity (5)</option> 
+            <option value="Sole Trader">Sole Trader (8)</option> 
+        </select>
+
+        <!-- Punctuation option ko next line pe lay aya gaya -->
+        <label id="includePunctuationLabel">
+            <input type="checkbox" id="includePunctuation"> Include punctuation
+        </label>
+
+        <div id="nifDisplay"></div>
+
+        <!-- Blue Generate button -->
+        <button id="generateButton">Generate</button>
+
+        <!-- Green Copy button -->
+        <button id="copyButton">Copy to Clipboard</button>
+
+        <!-- Generate and Copy button -->
+        <button id="generateCopyButton">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Punctuation ko track karne ke liye variable
+        let includePunctuation = false; 
+
+        // Randomly generate karne wala function jo NIF banata hai
+        function generateNIF() {
+            let nif = ''; // NIF ka empty string
+
+            // Entity category ko track karne ka function
+            const entity = document.getElementById("entitySelect").value;
+
+            // Starting digit define karna har entity category ke liye
+            let startingDigit = '';
+            switch (entity) {
+                case 'Single person':
+                    startingDigit = '1'; // Single person ke liye starting digit
+                    break;
+                case 'Public Legal Entity':
+                    startingDigit = '6'; // Public Legal Entity ke liye starting digit
+                    break;
+                case 'Non-Resident':
+                    startingDigit = '3'; // Non-Resident ke liye starting digit
+                    break;
+                case 'Legal Entity':
+                    startingDigit = '5'; // Legal Entity ke liye starting digit
+                    break;
+                case 'Sole Trader':
+                    startingDigit = '8'; // Sole Trader ke liye starting digit
+                    break;
+                case 'Random':
+                    startingDigit = Math.floor(Math.random() * 10).toString(); // Random starting digit
+                    break;
+            }
+
+            // Starting digit add karna
+            nif += startingDigit;
+
+            // Next 8 random digits generate karna
+            for (let i = 1; i < 9; i++) {
+                nif += Math.floor(Math.random() * 10).toString(); // 0-9 digits generate kar ke add karna
+            }
+
+            // Last digit ko calculate karna (simple example for demo purposes)
+            const checkDigit = calculateCheckDigit(nif);
+            nif += checkDigit; // Check digit add karna
+
+            // Format NIF agar punctuation include hai
+            return formatNIF(nif); 
+        }
+
+        // Check digit calculate karne ka function
+        function calculateCheckDigit(nif) {
+            let sum = 0;
+            for (let i = 0; i < nif.length; i++) {
+                sum += parseInt(nif[i]) * (9 - i); // Weighting 9 to 1
+            }
+            const remainder = sum % 11;
+            return remainder < 10 ? remainder : 0; // Return calculated check digit
+        }
+
+        // Format NIF function
+        function formatNIF(nif) {
+            // Agar punctuation included hai
+            if (includePunctuation) {
+                return `${nif.slice(0, 3)}.${nif.slice(3, 6)}.${nif.slice(6, 9)}`; // Format with punctuation
+            }
+            // Punctuation ke bina return
+            return nif;
+        }
+
+        // NIF ko display karne ka function
+        function displayNIF() {
+            const nif = generateNIF(); // Generate new NIF
+            document.getElementById("nifDisplay").innerText = `NIF: ${nif}`; // Show it on the page
+            return nif; // Return the NIF
+        }
+
+        // Clipboard pe copy karne ka function
+        function copyToClipboard(nif) {
+            const tempInput = document.createElement("input"); // Temporary input create
+            tempInput.value = nif; // Input ka value set
+            document.body.appendChild(tempInput); // Body mein input add
+            tempInput.select(); // Text select
+            document.execCommand("copy"); // Copy to clipboard
+            document.body.removeChild(tempInput); // Remove input
+            alert("Copied: " + nif); // Alert user
+        }
+
+        // Generate and Copy function
+        function generateAndCopy() {
+            const nif = displayNIF(); // Generate aur display karo
+            copyToClipboard(nif); // Copy bhi karo
+        }
+
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayNIF; // Generate button ke liye event
+        document.getElementById("copyButton").onclick = function() {
+            const nif = document.getElementById("nifDisplay").innerText.replace('NIF: ', ''); // Get displayed NIF
+            if (nif) {
+                copyToClipboard(nif); // Copy to clipboard
+            } else {
+                alert("Please generate a NIF number first."); // Alert if no NIF number is generated
+            }
+        };
+
+        // Generate & Copy button ka event listener
+        document.getElementById("generateCopyButton").onclick = generateAndCopy;
+
+        // Punctuation toggle karne ka function
+        function togglePunctuation() {
+            includePunctuation = document.getElementById("includePunctuation").checked; // Checkbox ka status update
+            displayNIF(); // NIF display karo
+        }
+
+        // Punctuation checkbox ka event listener
+        document.getElementById("includePunctuation").onclick = togglePunctuation;
+    </script>
+</body>
+</html>

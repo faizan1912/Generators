@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate Individual Taxpayer Registry (CPF)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #cpfResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Individual Taxpayer Registry (CPF)</h1>
+        <p>The CPF is made up of 11 numeric digits that follow the mask "###.###.###-##". 
+            The CPF verification takes place using the first 9 digits and, with a simple calculation, 
+            checking if the result corresponds to the last two digits. Also check out our 
+            <a href="/Generators/CPF_generator.html">CPF Generator</a>.</p>
+        <input type="text" id="cpfInput" placeholder="Enter your CPF number">
+        <button class="button validate-btn" onclick="validateCPF()">Validate</button>
+        <button class="button copy-btn" onclick="copyCPF()">Copy</button>
+        <div id="cpfResult"></div>
+    </div>
+
+    <script>
+        // Function to validate the CPF number
+        function validateCPF() {
+            const cpfNumber = document.getElementById('cpfInput').value.replace(/\D/g, ''); // Remove non-numeric characters
+            const cpfResult = document.getElementById('cpfResult'); // Result display element
+
+            if (/^\d{11}$/.test(cpfNumber)) { // CPF must have 11 numeric digits
+                if (cpfCheck(cpfNumber)) {
+                    cpfResult.innerText = "CPF Number is valid!"; // Display valid message
+                    cpfResult.style.color = "green"; // Change text color to green
+                } else {
+                    cpfResult.innerText = "Invalid CPF Number!"; // Display invalid message
+                    cpfResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                cpfResult.innerText = "Please enter a valid 11-digit CPF number."; // Error message for invalid format
+                cpfResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the CPF number to the clipboard
+        function copyCPF() {
+            const cpfNumber = document.getElementById('cpfInput').value; // Get input value
+
+            if (cpfNumber) {
+                // Create a temporary input element to hold the CPF number for copying
+                const tempInput = document.createElement("input");
+                tempInput.value = cpfNumber; // Set the input value to the CPF number
+                document.body.appendChild(tempInput); // Append the input to the document body
+
+                // Select the text in the input and copy it to the clipboard
+                tempInput.select();
+                document.execCommand("copy");
+
+                // Remove the temporary input element after copying
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + cpfNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a CPF number to copy."); // Alert if input is empty
+            }
+        }
+
+        // CPF validation algorithm (using modulo 11)
+        function cpfCheck(cpf) {
+            // Step 1: Validate the first digit
+            let sum = 0;
+            for (let i = 0; i < 9; i++) {
+                sum += parseInt(cpf.charAt(i)) * (10 - i);
+            }
+            let firstCheck = (sum * 10) % 11;
+            if (firstCheck === 10 || firstCheck === 11) firstCheck = 0;
+            if (firstCheck !== parseInt(cpf.charAt(9))) return false;
+
+            // Step 2: Validate the second digit
+            sum = 0;
+            for (let i = 0; i < 10; i++) {
+                sum += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+            let secondCheck = (sum * 10) % 11;
+            if (secondCheck === 10 || secondCheck === 11) secondCheck = 0;
+            if (secondCheck !== parseInt(cpf.charAt(10))) return false;
+
+            return true;
+        }
+    </script>
+</body>
+</html>

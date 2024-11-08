@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTM Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], input[type="url"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .button-container {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .generate {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .copy-generate {
+            background-color: #d85d5d;
+            color: white;
+        }
+
+        .clean {
+            background-color: #a71d21;
+            color: white;
+        }
+
+        .result-container {
+            font-size: 1.2em;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            min-height: 40px;
+            white-space: pre-wrap; /* Preserves whitespace and formatting */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UTM Generator</h1>
+        <p>Create UTMs to easily track your URLs, very useful for marketing campaigns.</p>
+
+        <input type="url" id="pageAddress" placeholder="Page address *">
+        <input type="text" id="campaignName" placeholder="Campaign Name *">
+        <input type="text" id="campaignOrigin" placeholder="Campaign Origin *">
+        <input type="text" id="campaignType" placeholder="Campaign Type *">
+        <input type="text" id="campaignCode" placeholder="Campaign code">
+        <input type="text" id="campaignTerms" placeholder="Campaign Terms">
+        <input type="text" id="campaignContent" placeholder="Campaign content">
+
+        <div class="button-container">
+            <button class="generate" onclick="generateUTM()">Generate</button>
+            <button class="copy-generate" onclick="copyAndGenerate()">Copy & Generate</button>
+            <button class="clean" onclick="cleanFields()">Clean</button>
+        </div>
+
+        <h3>Your generated UTM code</h3>
+        <div class="result-container" id="utmResult"></div>
+    </div>
+
+    <script>
+        function generateUTM() {
+            const pageAddress = document.getElementById("pageAddress").value;
+            const campaignName = document.getElementById("campaignName").value;
+            const campaignOrigin = document.getElementById("campaignOrigin").value;
+            const campaignType = document.getElementById("campaignType").value;
+            const campaignCode = document.getElementById("campaignCode").value;
+            const campaignTerms = document.getElementById("campaignTerms").value;
+            const campaignContent = document.getElementById("campaignContent").value;
+
+            const utmCode = `${pageAddress}?utm_source=${encodeURIComponent(campaignOrigin)}&utm_medium=${encodeURIComponent(campaignType)}&utm_campaign=${encodeURIComponent(campaignName)}${campaignCode ? `&utm_term=${encodeURIComponent(campaignTerms)}` : ''}${campaignContent ? `&utm_content=${encodeURIComponent(campaignContent)}` : ''}`;
+
+            document.getElementById("utmResult").textContent = utmCode;
+        }
+
+        function copyAndGenerate() {
+            generateUTM();
+            const utmResult = document.getElementById("utmResult").textContent;
+            navigator.clipboard.writeText(utmResult).then(() => {
+                alert("UTM code copied to clipboard!");
+            });
+        }
+
+        function cleanFields() {
+            document.getElementById("pageAddress").value = '';
+            document.getElementById("campaignName").value = '';
+            document.getElementById("campaignOrigin").value = '';
+            document.getElementById("campaignType").value = '';
+            document.getElementById("campaignCode").value = '';
+            document.getElementById("campaignTerms").value = '';
+            document.getElementById("campaignContent").value = '';
+            document.getElementById("utmResult").textContent = '';
+        }
+    </script>
+</body>
+</html>

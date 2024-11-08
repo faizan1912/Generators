@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Declaration of Residence</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f3f3f3;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+        }
+        .print-btn {
+            background-color: #1E90FF;
+        }
+        .clear-btn {
+            background-color: #ff4c4c; /* Red color for clear button */
+        }
+        .error-message {
+            color: lightyellow; /* Light yellow color for error message */
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Print Declaration of Residence</h2>
+    <form id="declarationForm">
+        <label for="declarationFor">Who is this statement for? *</label>
+        <select id="declarationFor" required>
+            <option value="">Select...</option>
+            <option value="me">For me</option>
+            <option value="someone">For someone</option>
+        </select>
+
+        <label for="declarationDate">Date of Declaration *</label>
+        <input type="number" id="declarationDate" placeholder="Day" required min="1" max="31" onkeydown="focusNext(event)">
+        <select id="declarationMonth" required onkeydown="focusNext(event)">
+            <option value="">Select Month...</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+        </select>
+        <input type="number" id="declarationYear" placeholder="Year" required min="1900" max="2100" onkeydown="focusNext(event)">
+
+        <label for="fullName">Full Name *</label>
+        <input type="text" id="fullName" required onkeydown="focusNext(event)">
+
+        <label for="nationality">Nationality *</label>
+        <select id="nationality" required onkeydown="focusNext(event)">
+            <option value="">Select...</option>
+            <option value="Brazilian">Brazilian</option>
+            <option value="Foreigner">Foreigner</option>
+        </select>
+
+        <label for="maritalStatus">Marital Status *</label>
+        <select id="maritalStatus" required onkeydown="focusNext(event)">
+            <option value="">Select...</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widower">Widower</option>
+            <option value="Separated">Separated</option>
+        </select>
+
+        <label for="cpf">CPF *</label>
+        <input type="text" id="cpf" required onkeydown="focusNext(event)">
+
+        <label for="id">ID *</label>
+        <input type="text" id="id" required onkeydown="focusNext(event)">
+
+        <label for="issuingAgency">Issuing Agency *</label>
+        <input type="text" id="issuingAgency" required onkeydown="focusNext(event)">
+
+        <label for="telephone">Telephone *</label>
+        <input type="text" id="telephone" required onkeydown="focusNext(event)">
+
+        <label for="zipCode">ZIP Code *</label>
+        <input type="text" id="zipCode" required onkeydown="focusNext(event)">
+
+        <label for="neighborhood">Neighborhood *</label>
+        <input type="text" id="neighborhood" required onkeydown="focusNext(event)">
+
+        <label for="city">City *</label>
+        <input type="text" id="city" required onkeydown="focusNext(event)">
+
+        <label for="state">State *</label>
+        <input type="text" id="state" required onkeydown="focusNext(event)">
+
+        <label for="address">Address *</label>
+        <input type="text" id="address" required onkeydown="focusNext(event)">
+
+        <label for="number">Number *</label>
+        <input type="number" id="number" required onkeydown="focusNext(event)">
+
+        <label for="complement">Complement</label>
+        <input type="text" id="complement" onkeydown="focusNext(event)">
+
+        <div class="error-message">
+            *When you click Print Statement, this process may take 1-2 minutes to complete the creation of the statement.
+        </div>
+
+        <div class="button-container">
+            <button type="button" class="print-btn" onclick="printDeclaration()">Print Declaration</button>
+            <button type="button" class="clear-btn" onclick="clearForm()">Clear Form</button>
+        </div>
+    </form>
+
+    <script>
+        function focusNext(event) {
+            // Move to the next input field on pressing Enter
+            if (event.key === "Enter") {
+                event.preventDefault();
+                let formElements = Array.from(document.querySelectorAll("#declarationForm input, #declarationForm select"));
+                let index = formElements.indexOf(event.target);
+                if (index >= 0 && index < formElements.length - 1) {
+                    formElements[index + 1].focus();
+                }
+            }
+        }
+
+        function validateForm() {
+            const requiredFields = Array.from(document.querySelectorAll("#declarationForm [required]"));
+            for (let field of requiredFields) {
+                if (!field.value) {
+                    field.focus();
+                    alert(`Please fill in the ${field.previousElementSibling.innerText}`);
+                    return false; // Form is not valid
+                }
+            }
+            return true; // Form is valid
+        }
+
+        function printDeclaration() {
+            // Validate the form before proceeding
+            if (!validateForm()) {
+                return; // Stop if validation fails
+            }
+
+            // Gather data from the form
+            const fullName = document.getElementById('fullName').value;
+            const nationality = document.getElementById('nationality').value;
+            const maritalStatus = document.getElementById('maritalStatus').value;
+
+            // Simple alert as a placeholder for actual declaration generation logic
+            alert(`Generating Declaration of Residence for ${fullName}, ${nationality}, ${maritalStatus}. This may take a few seconds...`);
+
+            // Trigger print preview
+            window.print();
+        }
+
+        function clearForm() {
+            // Clear all input fields and select options
+            document.getElementById('declarationForm').reset();
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

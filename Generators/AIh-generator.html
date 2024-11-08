@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIH Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 0;
+        }
+        p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .input-group {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #output {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        button {
+            width: 32%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition for background color */
+        }
+        .generate {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .generate:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+        .copy {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .copy:hover {
+            background-color: #218838; /* Darker shade on hover */
+        }
+        .generate-copy {
+            background-color: #df7b29;
+            color: #333;
+        }
+        .generate-copy:hover {
+            background-color: #c76a24; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>AIH Generator</h2>
+        <p>To generate valid Hospital Admission Authorization (AIH) numbers, simply click the "Generate AIH" 
+            button. You can also use the filters below to customize the generated number as you wish. 
+            Also check out our <a href="/validators/validate_AIh.html">Validate AIH</a>.</p>
+        
+        <div class="input-group">
+            <label for="state">AIH's state of origin</label>
+            <select id="state">
+                <option value="B.C">B.C</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="EC">EC</option>
+                <option value="DF">DF</option>
+                <option value="EN">EN</option>
+                <option value="GO">GO</option>
+                <option value="BAD">BAD</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="SHOVEL">SHOVEL</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="FOOT">FOOT</option>
+                <option value="IP">IP</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label for="year">AIH Year</label>
+            <input type="number" id="year" value="2024">
+        </div>
+        
+        <div class="input-group">
+            <label for="type">AIH Type</label>
+            <select id="type">
+                <option value="CNRAC APACs">CNRAC APACs</option>
+                <option value="Emergency Admission">Emergency Admission</option>
+                <option value="Scheduled Surgery">Scheduled Surgery</option>
+                <option value="Outpatient Services">Outpatient Services</option>
+                <option value="Mental Health Services">Mental Health Services</option>
+                <option value="Rehabilitation">Rehabilitation</option>
+                <option value="Long-term Care">Long-term Care</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>
+                <input type="checkbox" id="punctuation"> Add punctuation
+            </label>
+        </div>
+        
+        <div id="output" onclick="copyToClipboard()">Generated Number</div>
+        
+        <div class="button-group">
+            <button class="generate" onclick="generateAIH()">Generate AIH</button>
+            <button class="copy" onclick="copyToClipboard()">Copy</button>
+            <button class="generate-copy" onclick="generateAndCopy()">Generate & Copy</button>
+        </div>
+    </div>
+
+    <script>
+        function generateAIH() {
+            const state = document.getElementById('state').value;
+            const year = document.getElementById('year').value;
+            const type = document.getElementById('type').value;
+            const addPunctuation = document.getElementById('punctuation').checked;
+
+            let aihNumber = Math.floor(Math.random() * 100000000000);
+            let formattedNumber = addPunctuation ? aihNumber.toLocaleString() : aihNumber;
+
+            document.getElementById('output').innerText = formattedNumber;
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert('Copied to clipboard');
+            });
+        }
+
+        function generateAndCopy() {
+            generateAIH();
+            copyToClipboard();
+        }
+    </script>
+</body>
+</html>

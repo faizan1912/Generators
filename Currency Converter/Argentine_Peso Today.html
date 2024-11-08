@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argentine Peso Today | Argentine Peso Converter (ARS)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #2d72d9;
+        }
+        #rateDisplay {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Argentine Peso Today | Argentine Peso Converter (ARS)</h2>
+        <p>Enter the amount in ARS to see its equivalent in Brazilian Real (BRL):</p>
+        
+        <input type="number" id="arsInput" placeholder="Enter ARS amount" oninput="convertToBRL()">
+        <div class="result" id="resultDisplay">
+            <span>Converted Value: </span> R$ <span id="brlValue">0.00</span>
+        </div>
+        <div id="rateDisplay">Current rate: loading...</div>
+    </div>
+
+    <script>
+        let arsToBrlRate;
+
+        async function fetchExchangeRate() {
+            try {
+                // Fetch ARS to BRL exchange rate from an API
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=argentine-peso&vs_currencies=brl');
+                const data = await response.json();
+                arsToBrlRate = data['argentine-peso'].brl;
+
+                document.getElementById('rateDisplay').textContent = `1 Argentine Peso (ARS) is worth R$ ${arsToBrlRate} today.`;
+            } catch (error) {
+                console.error("Error fetching exchange rate:", error);
+                document.getElementById('rateDisplay').textContent = "Unable to load the current rate";
+            }
+        }
+
+        function convertToBRL() {
+            const arsAmount = document.getElementById('arsInput').value;
+            if (!arsToBrlRate || arsAmount === "") {
+                document.getElementById('brlValue').textContent = "0.00"; // Reset if there's no input or rate
+                return;
+            }
+
+            const brlEquivalent = (arsAmount * arsToBrlRate).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+
+            document.getElementById('brlValue').textContent = brlEquivalent;
+        }
+
+        // Fetch rate when the page loads
+        fetchExchangeRate();
+
+        // Refresh rate every 30 seconds
+        setInterval(fetchExchangeRate, 30000);
+    </script>
+</body>
+</html>

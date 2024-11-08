@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debit Card Validator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Result message style */
+        #cardResult {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Debit Card</h1>
+        <p>Validate your 16-digit debit card number here in a simple way. To do this, simply enter 
+            the number in the field below! We do not save the numbers entered here! Also check out 
+            our <a href="/Generators/debit_card_generator.html">Debit Card Generator</a>.</p>
+
+        <input type="text" id="debitCardNumber" placeholder="Enter your Debit Card number" maxlength="16">
+        <button class="button validate-btn" onclick="validateDebitCard()">Validate</button>
+        <div id="cardResult"></div>
+    </div>
+
+    <script>
+        // Function to check if the card number is valid using Luhn's algorithm
+        function luhnCheck(cardNumber) {
+            let sum = 0;
+            let shouldDouble = false;
+
+            // Process the card number from right to left
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber.charAt(i), 10);
+                if (shouldDouble) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9; // Subtract 9 if the result is greater than 9
+                    }
+                }
+                sum += digit;
+                shouldDouble = !shouldDouble; // Toggle doubling for the next digit
+            }
+
+            return (sum % 10 === 0); // Valid if the sum modulo 10 is 0
+        }
+
+        // Function to validate the debit card number
+        function validateDebitCard() {
+            const cardNumber = document.getElementById("debitCardNumber").value; // Get the entered card number
+            const cardResult = document.getElementById("cardResult"); // Get the result display element
+            
+            // Check if the card number is exactly 16 digits
+            if (/^\d{16}$/.test(cardNumber)) {
+                // Validate the number using Luhn's algorithm
+                if (luhnCheck(cardNumber)) {
+                    cardResult.innerText = "Debit Card Number is valid!"; // Display valid message
+                    cardResult.style.color = "green"; // Change text color to green
+                } else {
+                    cardResult.innerText = "Invalid Debit Card Number!"; // Display invalid message
+                    cardResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                cardResult.innerText = "Please enter a valid 16-digit number."; // Error message for invalid format
+                cardResult.style.color = "red"; // Change text color to red
+            }
+        }
+    </script>
+</body>
+</html>

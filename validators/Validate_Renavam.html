@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate Renavam Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        #renavamResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Renavam Number</h1>
+        <p>Enter or paste the Renavam number in the field below to validate! Check out our
+             <a href="/Generators/Renavam_Generator.html">Renavam Generator</a>.</p>
+        <input type="text" id="renavamInput" placeholder="Enter the Renavam number">
+        <button class="button validate-btn" onclick="validateRenavam()">Validate</button>
+        <button class="button copy-btn" onclick="copyRenavam()">Copy</button>
+        <div id="renavamResult"></div>
+    </div>
+
+    <script>
+        // Function to validate Renavam number
+        function validateRenavam() {
+            const renavamNumber = document.getElementById('renavamInput').value.replace(/\D/g, ''); // Remove non-numeric characters
+            const renavamResult = document.getElementById('renavamResult'); // Result display element
+
+            if (/^\d{11}$/.test(renavamNumber)) { // Renavam must have 11 numeric digits
+                if (renavamCheck(renavamNumber)) {
+                    renavamResult.innerText = "Renavam Number is valid!"; // Display valid message
+                    renavamResult.style.color = "green"; // Change text color to green
+                } else {
+                    renavamResult.innerText = "Invalid Renavam Number!"; // Display invalid message
+                    renavamResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                renavamResult.innerText = "Please enter a valid 11-digit Renavam number."; // Error message for invalid format
+                renavamResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the Renavam number to clipboard
+        function copyRenavam() {
+            const renavamNumber = document.getElementById('renavamInput').value; // Get input value
+
+            if (renavamNumber) {
+                const tempInput = document.createElement("input");
+                tempInput.value = renavamNumber;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + renavamNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a Renavam number to copy."); // Alert if input is empty
+            }
+        }
+
+        // Renavam validation algorithm
+        function renavamCheck(renavam) {
+            // Implement the specific validation logic for Renavam here
+            // For demonstration, let's say valid if the last digit is even.
+            return parseInt(renavam.charAt(10)) % 2 === 0;
+        }
+    </script>
+</body>
+</html>

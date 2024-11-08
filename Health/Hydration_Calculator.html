@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydration Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #2d72d9;
+            background-color: #e7f1ff; /* Light blue background */
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap; /* Preserve whitespace for formatting */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hydration Calculator</h2>
+        <p>Enter your weight (kg)</p>
+        <input type="number" id="weight" placeholder="Ex: 40" oninput="calculateWaterIntake()">
+        
+        <div class="result" id="resultDisplay"></div>
+    </div>
+
+    <script>
+        function calculateWaterIntake() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const resultDisplay = document.getElementById('resultDisplay');
+
+            if (!isNaN(weight) && weight > 0) {
+                const idealConsumption = weight * 35; // 35 ml per kg
+                const bottles = Math.ceil(idealConsumption / 3500); // 3.5L bottle
+                const cups = Math.ceil(idealConsumption / 530); // 530ml cup
+
+                resultDisplay.textContent = `Its ideal consumption is\n${idealConsumption}ml\nof water per day.\n\nThat is: ${bottles} ${bottles === 1 ? 'bottle' : 'bottles'} (3.5L each) or ${cups} ${cups === 1 ? 'cup' : 'cups'} (530ml each)\n(rounded up)`;
+            } else {
+                resultDisplay.textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>

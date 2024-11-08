@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Duplicate Rows and Auto-Correct</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        label {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Remove Duplicate Rows & Auto-Correct</h1>
+        <textarea id="textInput" placeholder="Type or paste your text" oninput="processText()"></textarea>
+        <label>
+            <input type="checkbox" id="caseSensitive" onchange="processText()"> Case Sensitive
+        </label>
+        <div class="result" id="resultOutput">Result will appear here</div>
+    </div>
+
+    <script>
+        const dictionary = {
+            "helloe": "hello",
+            "worls": "world",
+            "helo": "hello",
+            // Add more incorrect -> correct word pairs
+        };
+
+        function correctSpelling(text) {
+            return text.split(' ').map(word => {
+                return dictionary[word.toLowerCase()] || word;
+            }).join(' ');
+        }
+
+        function processText() {
+            let inputText = document.getElementById("textInput").value;
+            const caseSensitive = document.getElementById("caseSensitive").checked;
+
+            // Correct spelling
+            inputText = correctSpelling(inputText);
+
+            // Split input by new lines
+            let lines = inputText.split('\n');
+
+            // If case sensitive is not checked, convert all lines to lowercase for comparison
+            if (!caseSensitive) {
+                lines = lines.map(line => line.toLowerCase());
+            }
+
+            // Remove duplicates using Set
+            const uniqueLines = [...new Set(lines)];
+
+            // Display result
+            document.getElementById("resultOutput").innerText = uniqueLines.join('\n');
+        }
+    </script>
+</body>
+</html>

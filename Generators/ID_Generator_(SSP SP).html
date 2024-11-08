@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Generator (SSP SP)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px; /* Width adjustment for layout */
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #idDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0; /* Space for the generated ID number */
+            height: 30px; /* Fixed height to keep space */
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Button colors */
+        .generate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .generate-copy-btn {
+            background-color: #e1ad41; /* Mustard color */
+            color: white;
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #d29f3d; /* Darker mustard on hover */
+        }
+
+        /* Additional styling for checkbox */
+        .checkbox-container {
+            margin: 20px 0; /* Space above the checkbox */
+        }
+
+        /* Share icons container */
+        .share-icons {
+            margin-top: 20px; /* Space above icons */
+        }
+
+        .share-icons img {
+            width: 32px; /* Set icon size */
+            margin: 0 5px; /* Space between icons */
+            cursor: pointer; /* Cursor pointer on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ID Generator (SSP SP)</h1>
+        <p>Generate as many ID numbers as you want based on the SP state model by clicking the 
+            "Generate ID" button. Also check out our Validate ID (SSP SP). Also check out our <a href="/validators/Validate_ID_(SSP SP).html"> validate Id(ssp sp)</a></p>
+        
+        <div id="idDisplay"></div> <!-- Space for the generated ID number -->
+        
+        <div class="checkbox-container">
+            <input type="checkbox" id="punctuateCheckbox" onclick="togglePunctuation()">
+            <label for="punctuateCheckbox">Add Punctuation</label>
+        </div>
+
+        <button class="button generate-btn" onclick="generateIdNumber()">Generate ID</button>
+        <button class="button copy-btn" onclick="copyDetails()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+
+        <!-- Share icons section with only WhatsApp and Facebook -->
+        <div class="share-icons">
+            <span>Share on:</span>
+            <a href="https://wa.me/?text=ID%20Generator%20(SSP%20SP)%20Generated%20ID:%20" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon"></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Icon"></a>
+        </div>
+    </div>
+
+    <script>
+        let addPunctuation = false; // Flag to track punctuation
+
+        // Function to generate random ID number
+        function generateIdNumber() {
+            const idNumber = generateRandomId(); // Call function to generate the number
+            const idDisplay = document.getElementById("idDisplay");
+            idDisplay.innerText = addPunctuation ? addPunctuationToId(idNumber) : idNumber; // Display the generated number
+        }
+
+        // Function to generate a random 9-digit ID number
+        function generateRandomId() {
+            const numberPart = Math.floor(Math.random() * 1000000000); // Generate a random number up to 9 digits
+            return numberPart.toString().padStart(9, '0'); // Ensure it is 9 digits
+        }
+
+        // Function to add punctuation to the generated ID number (if needed)
+        function addPunctuationToId(id) {
+            return id.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3'); // Add hyphens for punctuation
+        }
+
+        // Function to copy the displayed ID number to the clipboard
+        function copyDetails() {
+            const idText = document.getElementById("idDisplay").innerText; // Get the ID text
+            
+            // Create a temporary input element to hold the ID number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = idText; // Set the input value to the ID text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the ID number has been copied
+            alert("Copied: " + idText);
+        }
+
+        // Function to generate ID number and copy it to the clipboard
+        function generateAndCopy() {
+            generateIdNumber(); // Generate ID number
+            copyDetails(); // Copy the generated ID number
+        }
+
+        // Toggle punctuation based on checkbox
+        function togglePunctuation() {
+            addPunctuation = document.getElementById("punctuateCheckbox").checked; // Update punctuation flag
+            if (addPunctuation) {
+                // Update displayed number with punctuation if already generated
+                const currentId = document.getElementById("idDisplay").innerText;
+                if (currentId) {
+                    document.getElementById("idDisplay").innerText = addPunctuationToId(currentId); // Update display
+                }
+            } else {
+                // Remove punctuation from displayed number if checkbox is unchecked
+                const currentId = document.getElementById("idDisplay").innerText;
+                if (currentId) {
+                    document.getElementById("idDisplay").innerText = currentId.replace(/-/g, ''); // Remove hyphens
+                }
+            }
+        }
+    </script>
+</body>
+</html>

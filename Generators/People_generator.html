@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Generate button color */
+        #generateButton {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #generateButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Copy button color */
+        #copyButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #copyButton:hover {
+            background-color: #218838;
+        }
+
+        /* Generate & Copy button color */
+        #generateCopyButton {
+            background-color: #e1ad41;
+            color: white;
+        }
+
+        #generateCopyButton:hover {
+            background-color: #c9a134;
+        }
+
+        .dataDisplay {
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        /* Styles for the select elements */
+        select {
+            width: 100%; /* Set to 100% to fit the container */
+            height: 40px; /* Increase height */
+            margin: 10px 0; /* Add margin for spacing */
+            border: 1px solid #ccc; /* Add border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 5px; /* Add padding */
+            font-size: 16px; /* Increase font size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><strong>People Generator</strong></h1>
+        <p>Click the button below to generate complete data for a person. You can use the filter to customize the data generated.</p>
+        
+        <label for="genderSelector">Gender:</label>
+        <select id="genderSelector">
+            <option value="Random">Random</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label for="stateSelector">State:</label>
+        <select id="stateSelector">
+            <option value="BR">BR</option>
+            <option value="AC">AC</option>
+            <option value="AL">AL</option>
+            <option value="AP">AP</option>
+            <option value="BA">BA</option>
+            <option value="CE">CE</option>
+            <option value="DF">DF</option>
+            <option value="ES">ES</option>
+            <option value="GO">GO</option>
+            <option value="MA">MA</option>
+            <option value="MT">MT</option>
+            <option value="MS">MS</option>
+            <option value="MG">MG</option>
+            <option value="PA">PA</option>
+            <option value="PB">PB</option>
+            <option value="PR">PR</option>
+            <option value="PE">PE</option>
+            <option value="PI">PI</option>
+            <option value="RJ">RJ</option>
+            <option value="RN">RN</option>
+            <option value="RS">RS</option>
+            <option value="RO">RO</option>
+            <option value="RR">RR</option>
+            <option value="SC">SC</option>
+            <option value="SP">SP</option>
+            <option value="SE">SE</option>
+            <option value="TO">TO</option>
+        </select>
+
+        <div class="dataDisplay" id="resultDisplay"></div>
+
+        <div>
+            <input type="checkbox" id="punctuateCheckbox" onclick="togglePunctuation()">
+            <label for="punctuateCheckbox">Add Punctuation</label>
+        </div>
+
+        <button id="generateButton" onclick="generatePersonData()">Generate</button>
+        <button id="copyButton" onclick="copyData()">Copy</button>
+        <button id="generateCopyButton" onclick="generateAndCopy()">Generate & Copy</button>
+    </div>
+
+    <script>
+        let addPunctuation = false; // Flag to track punctuation
+
+        // Function to generate random names
+        function generateRandomName(gender) {
+            const randomNames = {
+                Male: ["Alfredo Estellet Negris", "John Doe", "Michael Smith", "James Johnson", "Robert Brown"],
+                Female: ["Jane Doe", "Mary Johnson", "Patricia Brown", "Linda Williams"],
+                Random: ["Alfredo Estellet Negris", "John Doe", "Jane Doe", "Michael Smith", "Mary Johnson"]
+            };
+
+            return randomNames[gender][Math.floor(Math.random() * randomNames[gender].length)];
+        }
+
+        // Function to generate person data
+        function generatePersonData() {
+            const gender = document.getElementById("genderSelector").value;
+            const state = document.getElementById("stateSelector").value;
+
+            const name = generateRandomName(gender);
+            const dateOfBirth = new Date(Date.now() - Math.floor(Math.random() * 100000000000)).toLocaleDateString();
+            const cpf = Math.floor(Math.random() * 10000000000).toString();
+            const sspID = Math.floor(Math.random() * 1000000000).toString();
+            const cns = Math.floor(Math.random() * 100000000000000).toString();
+            const voterRegistration = Math.floor(Math.random() * 100000000000).toString();
+
+            const resultDisplay = document.getElementById("resultDisplay");
+
+            // Build the result display string
+            let displayString = `
+                <strong>Name:</strong> ${name}<br>
+                <strong>Date of Birth:</strong> ${dateOfBirth}<br>
+                <strong>CPF:</strong> ${cpf}<br>
+                <strong>SSP ID:</strong> ${sspID}<br>
+                <strong>CNS:</strong> ${cns}<br>
+                <strong>Voter Registration Card:</strong> ${voterRegistration}
+            `;
+
+            // Add punctuation if checkbox is ticked
+            if (addPunctuation) {
+                displayString = displayString.replace(/<br>/g, ',<br>'); // Add punctuation
+            }
+
+            resultDisplay.innerHTML = displayString; // Update result display
+        }
+
+        // Toggle punctuation based on checkbox
+        function togglePunctuation() {
+            addPunctuation = document.getElementById("punctuateCheckbox").checked;
+        }
+
+        // Copy data function
+        function copyData() {
+            const resultDisplay = document.getElementById("resultDisplay");
+            const data = resultDisplay.innerText;
+
+            const tempInput = document.createElement("input");
+            tempInput.value = data;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            alert("Copied: " + data);
+        }
+
+        // Generate and copy function
+        function generateAndCopy() {
+            generatePersonData(); // Generate data
+            copyData(); // Copy generated data
+        }
+    </script>
+</body>
+</html>

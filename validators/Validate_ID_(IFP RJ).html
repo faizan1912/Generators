@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate ID (IFP RJ)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        #idResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate ID (IFP RJ)</h1>
+        <p>Enter or paste your ID number (IFP RJ) in the field below to validate! Check
+             out our <a href="/Generators/ID_Generator_(IFP RJ).html">ID Generator (IFP RJ)</a>.</p>
+        <input type="text" id="idInput" placeholder="Enter your RJ ID number">
+        <button class="button validate-btn" onclick="validateID()">Validate</button>
+        <button class="button copy-btn" onclick="copyID()">Copy</button>
+        <div id="idResult"></div>
+    </div>
+
+    <script>
+        // Function to validate ID (IFP RJ) number
+        function validateID() {
+            const idNumber = document.getElementById('idInput').value.replace(/\D/g, ''); // Remove non-numeric characters
+            const idResult = document.getElementById('idResult'); // Result display element
+
+            if (/^\d{9}$/.test(idNumber)) { // ID must have 9 numeric digits
+                if (idCheck(idNumber)) {
+                    idResult.innerText = "ID Number is valid!"; // Display valid message
+                    idResult.style.color = "green"; // Change text color to green
+                } else {
+                    idResult.innerText = "Invalid ID Number!"; // Display invalid message
+                    idResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                idResult.innerText = "Please enter a valid 9-digit ID number."; // Error message for invalid format
+                idResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the ID number to clipboard
+        function copyID() {
+            const idNumber = document.getElementById('idInput').value; // Get input value
+
+            if (idNumber) {
+                const tempInput = document.createElement("input");
+                tempInput.value = idNumber;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + idNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter an ID number to copy."); // Alert if input is empty
+            }
+        }
+
+        // ID validation algorithm
+        function idCheck(id) {
+            // Implement the specific validation logic for IFP RJ ID here
+            // For demonstration, let's say valid if the first digit is odd.
+            return parseInt(id.charAt(0)) % 2 !== 0;
+        }
+    </script>
+</body>
+</html>

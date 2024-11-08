@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Registration Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Generate button ka rang blue */
+        #generateButton {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #generateButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Copy button ka rang green */
+        #copyButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #copyButton:hover {
+            background-color: #218838;
+        }
+
+        /* Generate & Copy button ka rang light blue */
+        #generateCopyButton {
+            background-color: #e29e0c;
+            color: white;
+        }
+
+        #generateCopyButton:hover {
+            background-color: #df8a1c;
+        }
+
+        #stateDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #stateSelect {
+            margin: 10px 0;
+            width: 100px;
+            height: 30px;
+            border: 2px solid black;
+        }
+
+        /* Punctuation ko next line pe laya gaya */
+        #includePunctuationLabel {
+            display: block;
+            margin: 10px 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><strong>State Registration Generator</strong></h1>
+        <p>Click the "Generate" button to generate as many valid State Registration numbers as you want! You can also choose the state and punctuation, if you wish.</p>
+
+        <p>State of Registration</p>
+        <select id="stateSelect">
+            <option value="BR">BR</option>
+            <option value="AC">AC</option>
+            <option value="AL">AL</option>
+            <option value="AP">AP</option>
+            <!-- Add more states as required -->
+        </select>
+
+        <!-- Punctuation option ko next line pe lay aya gaya -->
+        <label id="includePunctuationLabel">
+            <input type="checkbox" id="includePunctuation"> Include punctuation
+        </label>
+
+        <div id="stateDisplay"></div>
+
+        <!-- Blue Generate button -->
+        <button id="generateButton">Generate</button>
+
+        <!-- Green Copy button -->
+        <button id="copyButton">Copy to Clipboard</button>
+
+        <!-- Generate and Copy button -->
+        <button id="generateCopyButton">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Punctuation ko track karne ke liye variable
+        let includePunctuation = false; 
+
+        // Randomly generate karne wala function jo State Registration banata hai
+        function generateRegistration() {
+            let registration = ''; // Registration ka empty string
+
+            // Random 9 digits generate karna
+            for (let i = 0; i < 9; i++) {
+                registration += Math.floor(Math.random() * 10).toString(); // 0-9 digits generate kar ke add karna
+            }
+
+            // Format registration agar punctuation include hai
+            return formatRegistration(registration); 
+        }
+
+        // Format registration function
+        function formatRegistration(registration) {
+            // Agar punctuation included hai
+            if (includePunctuation) {
+                return `${registration.slice(0, 3)}.${registration.slice(3, 6)}.${registration.slice(6, 9)}`;
+            }
+            // Punctuation ke bina return
+            return registration;
+        }
+
+        // Registration ko display karne ka function
+        function displayRegistration() {
+            const registration = generateRegistration(); // Generate new registration
+            document.getElementById("stateDisplay").innerText = `Registration: ${registration}`; // Show it on the page
+            return registration; // Return the registration
+        }
+
+        // Clipboard pe copy karne ka function
+        function copyToClipboard(registration) {
+            const tempInput = document.createElement("input"); // Temporary input create
+            tempInput.value = registration; // Input ka value set
+            document.body.appendChild(tempInput); // Body mein input add
+            tempInput.select(); // Text select
+            document.execCommand("copy"); // Copy to clipboard
+            document.body.removeChild(tempInput); // Remove input
+            alert("Copied: " + registration); // Alert user
+        }
+
+        // Generate and Copy function
+        function generateAndCopy() {
+            const registration = displayRegistration(); // Generate aur display karo
+            copyToClipboard(registration); // Copy bhi karo
+        }
+
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayRegistration; // Generate button ke liye event
+        document.getElementById("copyButton").onclick = function() {
+            const registration = document.getElementById("stateDisplay").innerText.replace('Registration: ', ''); // Get displayed registration
+            if (registration) {
+                copyToClipboard(registration); // Copy to clipboard
+            } else {
+                alert("Please generate a registration number first."); // Alert if no registration number is generated
+            }
+        };
+
+        // Generate & Copy button ka event listener
+        document.getElementById("generateCopyButton").onclick = generateAndCopy;
+
+        // Punctuation toggle karne ka function
+        function togglePunctuation() {
+            includePunctuation = document.getElementById("includePunctuation").checked; // Checkbox ka status update
+            displayRegistration(); // Registration display karo
+        }
+
+        // Punctuation checkbox ka event listener
+        document.getElementById("includePunctuation").onclick = togglePunctuation;
+    </script>
+</body>
+</html>

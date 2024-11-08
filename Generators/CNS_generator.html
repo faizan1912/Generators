@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNS Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 380px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block; /* Align buttons in a single line */
+        }
+
+        #generateButton {
+            background-color: #28a745; /* Green color */
+        }
+
+        #generateButton:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #copyButton {
+            background-color: #007bff; /* Blue color */
+        }
+
+        #copyButton:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        #generateAndCopyButton {
+            background-color: #856404; /* Rust color */
+        }
+
+        #generateAndCopyButton:hover {
+            background-color: #7c6c00; /* Darker rust on hover */
+        }
+
+        #cnsDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #includePunctuation {
+            margin: 10px;
+        }
+
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center the buttons */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CNS Generator</h1>
+        <p>Generate as many National Health Registry (CNS) numbers as you want here. To generate, simply click
+             on "Generate CNS". You can also generate and copy to your clipboard by pressing the "Enter" 
+             shortcut key. Also check out <a href="/validators/validate_CNS.html">validate CNS.</a></p>
+
+        <input type="checkbox" id="includePunctuation" onclick="togglePunctuation()"> Include punctuation
+        <div id="cnsDisplay"></div>
+
+        <div class="button-container">
+            <button id="generateButton">Generate CNS</button>
+            <button id="copyButton">Copy to Clipboard</button>
+            <button id="generateAndCopyButton" onclick="generateAndCopy()">Generate & Copy</button>
+        </div>
+    </div>
+
+    <script>
+        // Variable to track whether punctuation should be included in the generated CNS number
+        let includePunctuation = false; 
+
+        // Function to generate a random CNS number
+        function generateCNS() {
+            let cns = ''; // Initialize an empty string to hold the CNS number
+            
+            // Generate 15 random digits
+            for (let i = 0; i < 15; i++) {
+                cns += Math.floor(Math.random() * 10).toString(); // Concatenate a random digit (0-9) to the CNS string
+            }
+            
+            return formatCNS(cns); // Format the CNS based on the checkbox state (punctuation included or not)
+        }
+
+        // Function to format the CNS number based on whether punctuation is included
+        function formatCNS(cns) {
+            // Check if the punctuation should be included
+            if (includePunctuation) {
+                // Format CNS with punctuation (e.g., "123.4567.8901.2345")
+                return `${cns.slice(0, 3)}.${cns.slice(3, 7)}.${cns.slice(7, 11)}.${cns.slice(11)}`;
+            }
+            return cns; // Return plain CNS if not including punctuation
+        }
+
+        // Function to display the generated CNS number on the webpage
+        function displayCNS() {
+            const cns = generateCNS(); // Generate a new CNS number
+            document.getElementById("cnsDisplay").innerText = `CNS: ${cns}`; // Display the generated CNS number
+            return cns; // Return the generated CNS number
+        }
+
+        // Function to copy the CNS number to the clipboard
+        function copyToClipboard(cns) {
+            // Create a temporary input element to hold the CNS number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = cns; // Set the value of the temporary input to the CNS number
+            document.body.appendChild(tempInput); // Append the input to the body
+            
+            // Select the text in the temporary input and copy it
+            tempInput.select();
+            document.execCommand("copy"); // Copy the selected text to the clipboard
+
+            // Remove the temporary input element from the body
+            document.body.removeChild(tempInput);
+
+            // Alert to inform the user that the CNS has been copied
+            alert("Copied: " + cns);
+        }
+
+        // Function to generate and copy the CNS number
+        function generateAndCopy() {
+            const cns = displayCNS(); // Generate and display the CNS number
+            copyToClipboard(cns); // Copy the displayed CNS number to the clipboard
+        }
+
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayCNS; // Set up the click event for the Generate button
+        document.getElementById("copyButton").onclick = function() {
+            const cns = document.getElementById("cnsDisplay").innerText.replace('CNS: ', ''); // Get displayed CNS number
+            if (cns) {
+                copyToClipboard(cns); // Copy to clipboard if there is a CNS number displayed
+            } else {
+                alert("Please generate a CNS number first."); // Alert if no CNS number is generated
+            }
+        }; // Set up the click event for the Copy button
+
+        // Allow generating CNS with the Enter key
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                generateAndCopy(); // Generate and copy when Enter is pressed
+            }
+        });
+
+        // Function to toggle punctuation inclusion
+        function togglePunctuation() {
+            includePunctuation = document.getElementById("includePunctuation").checked; // Update punctuation status based on checkbox state
+            displayCNS(); // Display the CNS with updated punctuation status
+        }
+    </script>
+</body>
+</html>

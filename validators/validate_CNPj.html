@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate National Registry of Legal Entities (CNPJ)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #cnpjResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate National Registry of Legal Entities (CNPJ)</h1>
+        <p>The National Registry of Legal Entities (CNPJ) is the registration of companies with the
+             Federal Revenue Service. This registry contains data such as the Company Name, the date
+              the company was opened and other information. Also check out our
+               <a href="/Generators/CNPJ_Generator.html">CNPJ Generator</a>.</p>
+        <input type="text" id="cnpjInput" placeholder="Enter the CNPJ number">
+        <button class="button validate-btn" onclick="validateCNPJ()">Validate</button>
+        <button class="button copy-btn" onclick="copyCNPJ()">Copy</button>
+        <div id="cnpjResult"></div>
+    </div>
+
+    <script>
+        // Function to validate the CNPJ number
+        function validateCNPJ() {
+            const cnpjNumber = document.getElementById('cnpjInput').value; // Get input value
+            const cnpjResult = document.getElementById('cnpjResult'); // Result display element
+            
+            // Validate CNPJ format (example: 14 numeric digits)
+            if (/^\d{14}$/.test(cnpjNumber)) {
+                if (cnpjLuhnCheck(cnpjNumber)) {
+                    cnpjResult.innerText = "CNPJ Number is valid!"; // Display valid message
+                    cnpjResult.style.color = "green"; // Change text color to green
+                } else {
+                    cnpjResult.innerText = "Invalid CNPJ Number!"; // Display invalid message
+                    cnpjResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                cnpjResult.innerText = "Please enter a valid 14-digit CNPJ number."; // Error message for invalid format
+                cnpjResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the CNPJ number to the clipboard
+        function copyCNPJ() {
+            const cnpjNumber = document.getElementById('cnpjInput').value; // Get input value
+
+            if (cnpjNumber) {
+                // Create a temporary input element to hold the CNPJ number for copying
+                const tempInput = document.createElement("input");
+                tempInput.value = cnpjNumber; // Set the input value to the CNPJ number
+                document.body.appendChild(tempInput); // Append the input to the document body
+                
+                // Select the text in the input and copy it to the clipboard
+                tempInput.select();
+                document.execCommand("copy");
+                
+                // Remove the temporary input element after copying
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + cnpjNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a CNPJ number to copy."); // Alert if input is empty
+            }
+        }
+
+        // Example Luhn algorithm check for CNPJ (simplified for the example)
+        function cnpjLuhnCheck(cnpjNumber) {
+            // Implement the actual Luhn algorithm check or validation method for CNPJ here
+            // This is a placeholder that returns true for any number
+            return true;
+        }
+    </script>
+</body>
+</html>

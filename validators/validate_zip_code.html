@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search/Validate ZIP Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .validate-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search/Validate ZIP Code</h1>
+        <p>Enter or paste the ZIP code number you wish to search/validate. Also check out our 
+            <a href="/Generators/Zip_code_generator.html">Zip Code Generator</a>.</p>
+        
+        <label for="zipInput">Enter ZIP code number to search:</label>
+        <input type="text" id="zipInput" placeholder="Enter ZIP code">
+
+        <button class="button validate-btn" onclick="validateZipCode()">Validate ZIP Code</button>
+
+        <div class="result" id="resultDisplay"></div>
+    </div>
+
+    <script>
+        function validateZipCode() {
+            const zipInput = document.getElementById("zipInput").value;
+            const resultDisplay = document.getElementById("resultDisplay");
+
+            // Example ZIP code validation (you can adjust this with real data or more complex validation)
+            const validZipCodes = ['12345', '67890', '54321']; // Example valid ZIP codes
+
+            if (validZipCodes.includes(zipInput)) {
+                resultDisplay.innerText = `ZIP Code ${zipInput} is valid.`;
+                resultDisplay.style.color = 'green';
+            } else {
+                resultDisplay.innerText = `ZIP Code ${zipInput} is not valid.`;
+                resultDisplay.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>

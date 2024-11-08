@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harris-Benedict Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #2d72d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Harris-Benedict Calculator</h2>
+        <p>Height (m):</p>
+        <input type="number" id="height" placeholder="Ex: 1.76" step="0.01">
+        
+        <p>Weight (kg):</p>
+        <input type="number" id="weight" placeholder="Ex: 78" step="0.1">
+        
+        <p>Age (years):</p>
+        <input type="number" id="age" placeholder="Ex: 26">
+        
+        <p>Sex:</p>
+        <select id="sex">
+            <option value="male">Masculine</option>
+            <option value="female">Feminine</option>
+        </select>
+
+        <p>Activity Factor:</p>
+        <select id="activityFactor">
+            <option value="sedentary">Sedentary (little or no exercise)</option>
+            <option value="light">Lightly active (Exercises 1 to 3 days a week)</option>
+            <option value="moderate">Moderately active (Exercises 3 to 5 days a week)</option>
+            <option value="active">Very active (Exercises 6 to 7 days a week)</option>
+            <option value="extraActive">Extra active (very hard exercise, physical job, or training twice a day)</option>
+        </select>
+
+        <button onclick="calculateBMR()">Calculate Rate</button>
+
+        <div class="result" id="resultDisplay"></div>
+    </div>
+
+    <script>
+        function calculateBMR() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const sex = document.getElementById('sex').value;
+            const activityFactor = document.getElementById('activityFactor').value;
+
+            let bmr;
+
+            // Harris-Benedict Equation
+            if (sex === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * (height * 100)) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * (height * 100)) - (4.330 * age);
+            }
+
+            // Activity multiplier
+            const activityMultipliers = {
+                sedentary: 1.2,
+                light: 1.375,
+                moderate: 1.55,
+                active: 1.725,
+                extraActive: 1.9
+            };
+
+            const totalCalories = bmr * activityMultipliers[activityFactor];
+
+            // Display the result
+            document.getElementById('resultDisplay').textContent = `BMR: ${Math.round(totalCalories)} calories/day`;
+        }
+    </script>
+</body>
+</html>

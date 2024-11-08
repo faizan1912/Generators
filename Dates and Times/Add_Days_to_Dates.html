@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Days to Dates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            margin: 10px 0;
+        }
+
+        input[type="date"], input[type="number"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+
+        .calendar-icon {
+            cursor: pointer;
+            margin-left: -35px;
+            margin-top: 10px;
+            position: relative;
+            top: 8px;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .result-container {
+            font-size: 1em;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin: 20px 0;
+            min-height: 40px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Days to Dates</h1>
+        <p>To add the days, enter the starting date (or select the date by clicking on the calendar image) plus the number of days you want to add:</p>
+
+        <h3>Start Date</h3>
+        <div>
+            <input type="date" id="startDate">
+            <span class="calendar-icon" onclick="document.getElementById('startDate').focus()">📅</span>
+        </div>
+
+        <h3>Add How Many Days?</h3>
+        <input type="number" id="daysToAdd" placeholder="Enter number of days" min="1">
+
+        <button onclick="addDays()">Add Days</button>
+
+        <h3>End Date (Result)</h3>
+        <div class="result-container" id="result">Your result will appear here.</div>
+    </div>
+
+    <script>
+        function addDays() {
+            const startDateInput = document.getElementById("startDate").value;
+            const daysToAdd = parseInt(document.getElementById("daysToAdd").value, 10);
+
+            if (!startDateInput || isNaN(daysToAdd)) {
+                document.getElementById("result").textContent = "Please enter a valid start date and number of days.";
+                return;
+            }
+
+            const startDate = new Date(startDateInput);
+            startDate.setDate(startDate.getDate() + daysToAdd);
+
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            document.getElementById("result").textContent = startDate.toLocaleDateString('en-US', options);
+        }
+    </script>
+</body>
+</html>

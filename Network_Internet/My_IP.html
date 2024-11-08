@@ -1,0 +1,190 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Display with Copy Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .ip-address {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .copy-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Internet Protocol (IP)</h1>
+        <p>IP (or Internet Protocol) is a number that your computer/router receives when it connects to the Internet. It is through this number that your computer is identified and can send and receive data. The IP is set by your Internet service provider and can be static (not changing) or dynamic (changing from time to time).</p>
+        <div class="ip-address" id="ipAddress">124.29.230.214</div>
+        <button class="copy-button" onclick="copyIP()">Copy</button>
+    </div>
+
+    <script>
+        function copyIP() {
+            const ipText = document.getElementById("ipAddress").textContent;
+            navigator.clipboard.writeText(ipText).then(() => {
+                alert("IP Address copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy IP: ", err);
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Display with Copy Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .ip-address {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .copy-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Internet Protocol (IP)</h1>
+        <p>IP (or Internet Protocol) is a number that your computer/router receives when it connects to the Internet. It is through this number that your computer is identified and can send and receive data. The IP is set by your Internet service provider and can be static (not changing) or dynamic (changing from time to time).</p>
+        <div class="ip-address" id="ipAddress">Loading...</div>
+        <button class="copy-button" onclick="copyIP()">Copy</button>
+    </div>
+
+    <script>
+        async function fetchIP() {
+            try {
+                // Using ipify API to fetch the user's IP address
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                document.getElementById("ipAddress").textContent = data.ip;
+            } catch (error) {
+                console.error("Failed to fetch IP: ", error);
+                document.getElementById("ipAddress").textContent = "Unable to retrieve IP address.";
+            }
+        }
+
+        function copyIP() {
+            const ipText = document.getElementById("ipAddress").textContent;
+            navigator.clipboard.writeText(ipText).then(() => {
+                alert("IP Address copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy IP: ", err);
+            });
+        }
+
+        // Call fetchIP when the page loads
+        window.onload = fetchIP;
+    </script>
+</body>
+</html>

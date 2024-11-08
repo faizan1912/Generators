@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Post Office Labels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f3f3f3;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .recipient h3 {
+            background-color: #1E90FF; /* Blue color for recipient heading */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .sender h3 {
+            background-color: #28b124; /* Dark red color for sender heading */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            margin: 5px; /* Add margin between buttons */
+        }
+        .print-btn {
+            background-color: #1E90FF; /* Print button color */
+        }
+        .clear-btn {
+            background-color: #ff4c4c; /* Red color for clear button */
+        }
+        .error-message {
+            color: lightyellow; /* Light yellow color for error message */
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Print Post Office Labels</h2>
+    <form id="postOfficeForm">
+
+        <!-- Recipient details section -->
+        <div class="section recipient">
+            <h3>Recipient details (who will receive it)</h3>
+            <label for="recipientFullName">Full Name *</label>
+            <input type="text" id="recipientFullName" required>
+            
+            <label for="recipientPhone">Telephone/Cell Phone</label>
+            <input type="text" id="recipientPhone">
+            
+            <label for="recipientZipCode">ZIP Code *</label>
+            <input type="text" id="recipientZipCode" required>
+            
+            <label for="recipientNeighborhood">Neighborhood *</label>
+            <input type="text" id="recipientNeighborhood" required>
+            
+            <label for="recipientCity">City *</label>
+            <input type="text" id="recipientCity" required>
+            
+            <label for="recipientState">State *</label>
+            <input type="text" id="recipientState" required>
+            
+            <label for="recipientAddress">Address *</label>
+            <input type="text" id="recipientAddress" required>
+            
+            <label for="recipientNumber">Number *</label>
+            <input type="number" id="recipientNumber" required>
+            
+            <label for="recipientComplement">Complement</label>
+            <input type="text" id="recipientComplement">
+            
+            <div class="button-container">
+                <button type="button" class="clear-btn" onclick="clearRecipient()">Clear Recipient Data</button>
+            </div>
+        </div>
+
+        <!-- Sender data section -->
+        <div class="section sender">
+            <h3>Sender data (who is sending)</h3>
+            <label for="senderFullName">Full Name *</label>
+            <input type="text" id="senderFullName" required>
+            
+            <label for="senderZipCode">ZIP Code *</label>
+            <input type="text" id="senderZipCode" required>
+            
+            <label for="senderNeighborhood">Neighborhood *</label>
+            <input type="text" id="senderNeighborhood" required>
+            
+            <label for="senderCity">City *</label>
+            <input type="text" id="senderCity" required>
+            
+            <label for="senderState">State *</label>
+            <input type="text" id="senderState" required>
+            
+            <label for="senderAddress">Address *</label>
+            <input type="text" id="senderAddress" required>
+            
+            <label for="senderNumber">Number *</label>
+            <input type="number" id="senderNumber" required>
+            
+            <label for="senderComplement">Complement</label>
+            <input type="text" id="senderComplement">
+            
+            <div class="button-container">
+                <button type="button" class="clear-btn" onclick="clearSender()">Clear Sender Data</button>
+            </div>
+        </div>
+
+        <div class="error-message">
+            *When you click Print Label, this process may take 1-2 minutes to complete creating the label.
+        </div>
+
+        <div class="button-container">
+            <button type="button" class="print-btn" onclick="printLabel()">Print Label</button>
+        </div>
+    </form>
+
+    <script>
+        function clearRecipient() {
+            // Clear all input fields in the recipient section
+            const recipientFields = ['recipientFullName', 'recipientPhone', 'recipientZipCode', 'recipientNeighborhood', 'recipientCity', 'recipientState', 'recipientAddress', 'recipientNumber', 'recipientComplement'];
+            recipientFields.forEach(field => document.getElementById(field).value = '');
+        }
+
+        function clearSender() {
+            // Clear all input fields in the sender section
+            const senderFields = ['senderFullName', 'senderZipCode', 'senderNeighborhood', 'senderCity', 'senderState', 'senderAddress', 'senderNumber', 'senderComplement'];
+            senderFields.forEach(field => document.getElementById(field).value = '');
+        }
+
+        function printLabel() {
+            // Validate all required fields before printing
+            const requiredFields = [
+                'recipientFullName', 'recipientZipCode', 'recipientNeighborhood', 'recipientCity', 'recipientState', 'recipientAddress', 'recipientNumber',
+                'senderFullName', 'senderZipCode', 'senderNeighborhood', 'senderCity', 'senderState', 'senderAddress', 'senderNumber'
+            ];
+            let isValid = true;
+
+            for (const field of requiredFields) {
+                if (!document.getElementById(field).value) {
+                    isValid = false;
+                    document.getElementById(field).focus();
+                    break; // Stop on first empty field
+                }
+            }
+
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+                return; // Stop further processing
+            }
+
+            // Simple alert as a placeholder for actual label generation logic
+            const recipientFullName = document.getElementById('recipientFullName').value;
+            const senderFullName = document.getElementById('senderFullName').value;
+            alert(`Generating label for recipient: ${recipientFullName}, sender: ${senderFullName}. This may take a few seconds...`);
+
+            // Trigger print preview
+            window.print();
+        }
+
+        // Add keyboard navigation for input fields
+        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+            input.addEventListener('keydown', (event) => {
+                // Enter key to go to next field
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent form submission
+                    const inputs = Array.from(document.querySelectorAll('input[type="text"], input[type="number"]'));
+                    const index = inputs.indexOf(event.target);
+                    if (index > -1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus(); // Move to next input
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+            input.addEventListener('keydown', (event) => {
+                // Up arrow to move to previous field
+                if (event.key === 'ArrowUp') {
+                    const inputs = Array.from(document.querySelectorAll('input[type="text"], input[type="number"]'));
+                    const index = inputs.indexOf(event.target);
+                    if (index > 0) {
+                        inputs[index - 1].focus(); // Move to previous input
+                    }
+                }
+                // Down arrow to move to next field
+                if (event.key === 'ArrowDown') {
+                    const inputs = Array.from(document.querySelectorAll('input[type="text"], input[type="number"]'));
+                    const index = inputs.indexOf(event.target);
+                    if (index > -1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus(); // Move to next input
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

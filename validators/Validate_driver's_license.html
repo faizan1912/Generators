@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate Driver's License</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #licenseResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Driver's License</h1>
+        <p>Enter or paste your driver's license number in the field below to validate! Also check out our
+             <a href="/Generators/Driver's_License_Generator.html ">Driver's License Generator</a>.</p>
+        <input type="text" id="licenseInput" placeholder="Enter your driver's license number">
+        <button class="button validate-btn" onclick="validateLicense()">Validate</button>
+        <button class="button copy-btn" onclick="copyLicense()">Copy</button>
+        <div id="licenseResult"></div>
+    </div>
+
+    <script>
+        // Function to validate the driver's license number
+        function validateLicense() {
+            const licenseNumber = document.getElementById('licenseInput').value; // Get input value
+            const licenseResult = document.getElementById('licenseResult'); // Result display element
+            
+            // Validate the license number (example: 8-20 alphanumeric characters)
+            if (/^\w{8,20}$/.test(licenseNumber)) {
+                licenseResult.innerText = "Driver's License Number is valid!"; // Display valid message
+                licenseResult.style.color = "green"; // Change text color to green
+            } else {
+                licenseResult.innerText = "Invalid Driver's License Number!"; // Display invalid message
+                licenseResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the driver's license number to the clipboard
+        function copyLicense() {
+            const licenseNumber = document.getElementById('licenseInput').value; // Get input value
+
+            if (licenseNumber) {
+                // Create a temporary input element to hold the license number for copying
+                const tempInput = document.createElement("input");
+                tempInput.value = licenseNumber; // Set the input value to the license number
+                document.body.appendChild(tempInput); // Append the input to the document body
+                
+                // Select the text in the input and copy it to the clipboard
+                tempInput.select();
+                document.execCommand("copy");
+                
+                // Remove the temporary input element after copying
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + licenseNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a driver's license number to copy."); // Alert if input is empty
+            }
+        }
+    </script>
+</body>
+</html>

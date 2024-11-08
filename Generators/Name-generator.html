@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Generate button color */
+        #generateButton {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #generateButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Copy button color */
+        #copyButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #copyButton:hover {
+            background-color: #218838;
+        }
+
+        /* Generate and Copy button color */
+        #generateCopyButton {
+            background-color: #bb5808;
+            color: white;
+        }
+
+        #generateCopyButton:hover {
+            background-color: #f1720a;
+        }
+
+        #nameDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #genderSelect {
+            margin: 10px 0;
+            width: 200px;
+            height: 30px;
+            border: 2px solid black;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><strong>Name Generator</strong></h1>
+        <p>Create as many names as you want by clicking the "Generate Name" button.</p>
+
+        <div id="nameDisplay">Giovanni Facre Braz Barroso</div>
+
+        <p>Gender</p>
+        <select id="genderSelect">
+            <option value="Random">Random</option>
+            <option value="Masculine">Masculine</option>
+            <option value="Feminine">Feminine</option>
+        </select>
+
+        <div class="button-row">
+            <!-- Generate Name button -->
+            <button id="generateButton">Generate Name</button>
+            <!-- Copy button -->
+            <button id="copyButton">Copy to Clipboard</button>
+        </div>
+
+        <!-- Generate & Copy button -->
+        <button id="generateCopyButton">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Function to generate a random name
+        function generateRandomName(gender) {
+            const firstNames = gender === "Feminine" ? 
+                ["Giovanna", "Ana", "Maria", "Laura", "Sofia"] : 
+                ["Giovanni", "Antonio", "Marco", "Luiz", "Carlos"];
+
+            const lastNames = ["Facre", "Braz", "Barroso", "Silva", "Costa", "Pereira", "Mendes"];
+            
+            const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+            
+            return `${randomFirstName} ${randomLastName}`; // Combine first and last names
+        }
+
+        // Display the generated name
+        function displayName() {
+            const gender = document.getElementById("genderSelect").value;
+            const name = generateRandomName(gender); // Generate name based on selected gender
+            document.getElementById("nameDisplay").innerText = name; // Show it on the page
+            return name; // Return the name
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(name) {
+            const tempInput = document.createElement("input"); // Temporary input create
+            tempInput.value = name; // Input value set
+            document.body.appendChild(tempInput); // Add input to body
+            tempInput.select(); // Select text
+            document.execCommand("copy"); // Copy to clipboard
+            document.body.removeChild(tempInput); // Remove input
+            alert("Copied: " + name); // Alert user
+        }
+
+        // Generate and Copy function
+        function generateAndCopy() {
+            const name = displayName(); // Generate and display name
+            copyToClipboard(name); // Copy it
+        }
+
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayName; // Generate button event
+        document.getElementById("copyButton").onclick = function() {
+            const name = document.getElementById("nameDisplay").innerText; // Get displayed name
+            if (name) {
+                copyToClipboard(name); // Copy to clipboard
+            } else {
+                alert("Please generate a name first."); // Alert if no name is generated
+            }
+        };
+
+        // Generate & Copy button event listener
+        document.getElementById("generateCopyButton").onclick = generateAndCopy;
+    </script>
+</body>
+</html>

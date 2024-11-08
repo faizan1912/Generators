@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Bingo Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            color: #333;
+        }
+        .options {
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            font-size: 1rem;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .bingo-cards {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .card {
+            display: inline-block;
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 10px;
+            page-break-inside: avoid;
+        }
+        .card h3 {
+            margin: 0;
+        }
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .card td {
+            border: 1px solid #333;
+            width: 20%;
+            height: 40px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Print Bingo Cards</h2>
+    <div class="options">
+        <label for="numCards">Number of Cards</label>
+        <input type="number" id="numCards" value="5" min="1" max="2000">
+        
+        <label for="numRange">Quantity of Numbers</label>
+        <select id="numRange">
+            <option value="75">1 to 75 numbers</option>
+            <option value="75">1 to 90 numbers</option>
+        </select>
+        
+        <label>
+            <input type="checkbox" id="addNumbering" checked> Add numbering to the cards
+        </label>
+    </div>
+    
+    <button class="button" onclick="generateBingoCards()">Print Bingo Cards</button>
+</div>
+
+<div id="bingoCards" class="bingo-cards">
+    <div id="cardContainer"></div>
+</div>
+
+
+
+
+<script>
+    function generateBingoCards() {
+        const numCards = parseInt(document.getElementById('numCards').value);
+        const addNumbering = document.getElementById('addNumbering').checked;
+        const bingoCardsDiv = document.getElementById('bingoCards');
+        const cardContainer = document.getElementById('cardContainer');
+        
+        cardContainer.innerHTML = ''; // Clear previous cards
+        bingoCardsDiv.style.display = 'block';
+
+        for (let i = 0; i < numCards; i++) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            // Optional card numbering
+            if (addNumbering) {
+                const heading = document.createElement('h3');
+                heading.textContent = `BINGO Nº ${i + 1}`;
+                card.appendChild(heading);
+            }
+
+            const table = document.createElement('table');
+            const numbers = generateBingoNumbers();
+
+            // Populate table with numbers
+            for (let row = 0; row < 5; row++) {
+                const tr = document.createElement('tr');
+                for (let col = 0; col < 5; col++) {
+                    const td = document.createElement('td');
+                    td.textContent = numbers[row * 5 + col];
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+
+            card.appendChild(table);
+            cardContainer.appendChild(card);
+        }
+
+        // Trigger print preview
+        window.print();
+    }
+
+    function generateBingoNumbers() {
+        const nums = new Set();
+        while (nums.size < 25) {
+            let rand = Math.floor(Math.random() * 75) + 1;
+            nums.add(rand);
+        }
+        return Array.from(nums);
+    }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px; /* Space between buttons */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .generate {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .copy {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-generate {
+            background-color: #d85d5d;
+            color: white;
+        }
+
+        .result-container {
+            font-size: 1.5em;
+            color: #333;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin: 20px 0; /* Space above and below the result */
+            min-height: 40px;
+            white-space: pre-wrap; /* Preserves whitespace and formatting */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UUID Generator</h1>
+        <p>Click the button below to get a new version 4 UUID.</p>
+
+        <div class="result-container" id="uuidResult">ce058055-3f3a-41ac-8c1b-f83ccde176bb</div>
+
+        <div class="button-container">
+            <button class="generate" onclick="generateUUID()">Generate UUID</button>
+            <button class="copy" onclick="copyUUID()">Copy</button>
+            <button class="copy-generate" onclick="copyAndGenerateUUID()">Copy & Generate</button>
+        </div>
+    </div>
+
+    <script>
+        function generateUUID() {
+            const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            document.getElementById("uuidResult").textContent = uuid;
+        }
+
+        function copyUUID() {
+            const uuidResult = document.getElementById("uuidResult").textContent;
+            navigator.clipboard.writeText(uuidResult).then(() => {
+                alert("UUID copied to clipboard!");
+            });
+        }
+
+        function copyAndGenerateUUID() {
+            generateUUID();
+            copyUUID();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .info {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .copy-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-button:hover {
+            background-color: #218838;
+        }
+
+        .copy-both-button {
+            background-color: #d69a22;
+            color: white;
+        }
+
+        .copy-both-button:hover {
+            background-color: #c6871b;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Browser</h1>
+        <p>Check your browser and version below.</p>
+
+        <div class="info" id="browserName">Browser: Google Chrome</div>
+        <div class="info" id="browserVersion">Version: 130.0.0.0</div>
+
+        <button class="button copy-button" onclick="copyBrowserName()">Copy Name</button>
+        <button class="button copy-button" onclick="copyBrowserVersion()">Copy Version</button>
+        <button class="button copy-both-button" onclick="copyBoth()">Copy Name & Version</button>
+    </div>
+
+    <script>
+        function copyBrowserName() {
+            const browserName = document.getElementById("browserName").textContent.split(": ")[1];
+            navigator.clipboard.writeText(browserName).then(() => {
+                alert("Browser Name copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+
+        function copyBrowserVersion() {
+            const browserVersion = document.getElementById("browserVersion").textContent.split(": ")[1];
+            navigator.clipboard.writeText(browserVersion).then(() => {
+                alert("Browser Version copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+
+        function copyBoth() {
+            const browserName = document.getElementById("browserName").textContent.split(": ")[1];
+            const browserVersion = document.getElementById("browserVersion").textContent.split(": ")[1];
+            const bothInfo = `${browserName}, Version: ${browserVersion}`;
+            navigator.clipboard.writeText(bothInfo).then(() => {
+                alert("Browser Name and Version copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+    </script>
+</body>
+</html> 
+
+
+
+
+
+
+
+

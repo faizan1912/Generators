@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate Tax Identification Number (NIF)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        #nifResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Tax Identification Number (NIF)</h1>
+        <p>NIF is the acronym for "Número de Identificação Fiscal" (Tax Identification Number) in Portugal. 
+            It is an identification number assigned to each Portuguese citizen and companies for tax and 
+            administrative purposes. Check out our <a href="/Generators/NIF_generator.html">NIF Generator</a>.</p>
+        <input type="text" id="nifInput" placeholder="Enter the NIF number">
+        <button class="button validate-btn" onclick="validateNIF()">Validate</button>
+        <button class="button copy-btn" onclick="copyNIF()">Copy</button>
+        <div id="nifResult"></div>
+    </div>
+
+    <script>
+        // Function to validate NIF number
+        function validateNIF() {
+            const nifNumber = document.getElementById('nifInput').value.replace(/\D/g, ''); // Remove non-numeric characters
+            const nifResult = document.getElementById('nifResult'); // Result display element
+
+            if (/^\d{9}$/.test(nifNumber)) { // NIF must have 9 numeric digits
+                if (nifCheck(nifNumber)) {
+                    nifResult.innerText = "NIF Number is valid!"; // Display valid message
+                    nifResult.style.color = "green"; // Change text color to green
+                } else {
+                    nifResult.innerText = "Invalid NIF Number!"; // Display invalid message
+                    nifResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                nifResult.innerText = "Please enter a valid 9-digit NIF number."; // Error message for invalid format
+                nifResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the NIF number to clipboard
+        function copyNIF() {
+            const nifNumber = document.getElementById('nifInput').value; // Get input value
+
+            if (nifNumber) {
+                const tempInput = document.createElement("input");
+                tempInput.value = nifNumber;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + nifNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a NIF number to copy."); // Alert if input is empty
+            }
+        }
+
+        // NIF validation algorithm
+        function nifCheck(nif) {
+            const nifDigits = nif.split('').map(Number);
+            const firstDigit = nifDigits[0];
+
+            // NIF number must start with digits 1, 2, 3, 5, 6, 7, 8, or 9
+            if (![1, 2, 3, 5, 6, 7, 8, 9].includes(firstDigit)) {
+                return false;
+            }
+
+            // Validate the check digit (last digit) using modulo 11
+            let sum = 0;
+            for (let i = 0; i < 8; i++) {
+                sum += nifDigits[i] * (9 - i);
+            }
+            const checkDigit = 11 - (sum % 11);
+            return checkDigit === nifDigits[8] || (checkDigit === 10 && nifDigits[8] === 0);
+        }
+    </script>
+</body>
+</html>

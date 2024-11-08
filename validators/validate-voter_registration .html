@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate Voter Registration Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .validate-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        #voterResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate Voter Registration Card</h1>
+        <p>Enter or paste your Voter Registration Number in the field below to validate! Check out our 
+            <a href="/Generators/Voter_Registration_Card_Generator.html">Voter Registration Number Generator</a>.</p>
+        <input type="text" id="voterInput" placeholder="Enter your Voter Registration Number">
+        <button class="button validate-btn" onclick="validateVoter()">Validate</button>
+        <button class="button copy-btn" onclick="copyVoter()">Copy</button>
+        <div id="voterResult"></div>
+    </div>
+
+    <script>
+        // Function to validate Voter Registration Number
+        function validateVoter() {
+            const voterNumber = document.getElementById('voterInput').value.replace(/\D/g, ''); // Remove non-numeric characters
+            const voterResult = document.getElementById('voterResult'); // Result display element
+
+            if (/^\d{10}$/.test(voterNumber)) { // Voter Registration Number must have 10 numeric digits
+                if (voterCheck(voterNumber)) {
+                    voterResult.innerText = "Voter Registration Number is valid!"; // Display valid message
+                    voterResult.style.color = "green"; // Change text color to green
+                } else {
+                    voterResult.innerText = "Invalid Voter Registration Number!"; // Display invalid message
+                    voterResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                voterResult.innerText = "Please enter a valid 10-digit Voter Registration Number."; // Error message for invalid format
+                voterResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the Voter Registration Number to clipboard
+        function copyVoter() {
+            const voterNumber = document.getElementById('voterInput').value; // Get input value
+
+            if (voterNumber) {
+                const tempInput = document.createElement("input");
+                tempInput.value = voterNumber;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + voterNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a Voter Registration Number to copy."); // Alert if input is empty
+            }
+        }
+
+        // Voter Registration Number validation algorithm
+        function voterCheck(voter) {
+            // Implement the specific validation logic for Voter Registration Number here
+            // For demonstration, let's say valid if the first digit is odd.
+            return parseInt(voter.charAt(0)) % 2 !== 0;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIH Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .description {
+            margin-bottom: 20px;
+        }
+
+        .description a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .description a:hover {
+            text-decoration: underline;
+        }
+
+        #aihResult {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Description Section -->
+        <div class="description">
+            <h2>Validate Hospital Admission Authorization (AIH)</h2>
+            <p>Hospital Admission Authorization (AIH) is the registration instrument used by all managers and service providers of the SUS and features the proposal of payment for fixed amounts of medical hospital procedures, which include the materials that must be used, the procedures that are performed, the health professionals involved, and the hotel structure. Also check out our 
+            <a href="/Generators/AIh-generator.html">AIH Generator</a>.</p>
+        </div>
+
+        <h1>AIH Validation</h1>
+        <p>Enter the AIH number to validate</p>
+        <input type="text" id="aihInput" placeholder="Enter AIH number">
+        <button class="button validate-btn" onclick="validateAIH()">Validate</button>
+
+        <div id="aihResult"></div>
+    </div>
+
+    <script>
+        // Function to validate AIH number
+        function validateAIH() {
+            const aihNumber = document.getElementById('aihInput').value; // Get the AIH number from the input field
+            const aihResult = document.getElementById('aihResult'); // Get the result display element
+            
+            // Example validation logic (you can replace this with your real validation logic)
+            if (aihNumber === "12345") { // If the AIH number is valid
+                aihResult.innerText = "AIH Number is valid!";
+                aihResult.style.color = "green";
+            } else if (aihNumber) {
+                aihResult.innerText = "Invalid AIH Number!";
+                aihResult.style.color = "red";
+            } else {
+                aihResult.innerText = "";
+            }
+        }
+    </script>
+</body>
+</html>

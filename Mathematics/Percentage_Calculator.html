@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .calculator-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Percentage Calculator</h1>
+        <p>Below you can use the percentage calculators that best apply to your problem, just type in the fields and click on the “Calculate” button of the corresponding calculator.</p>
+
+        <!-- Calculator 01 -->
+        <div class="calculator-box">
+            <h2>Calculator 01</h2>
+            <input type="number" id="calc01_value" placeholder="How much is it?" required>
+            <input type="number" id="calc01_percent" placeholder="% of" required>
+            <button onclick="calculate01()">Calculate</button>
+            <div class="result" id="calc01_result"></div>
+        </div>
+
+        <!-- Calculator 02 -->
+        <div class="calculator-box">
+            <h2>Calculator 02</h2>
+            <input type="number" id="calc02_value" placeholder="The value" required>
+            <input type="number" id="calc02_total" placeholder="is how many % of" required>
+            <button onclick="calculate02()">Calculate</button>
+            <div class="result" id="calc02_result"></div>
+        </div>
+
+        <!-- Calculator 03 -->
+        <div class="calculator-box">
+            <h2>Calculator 03</h2>
+            <input type="number" id="calc03_initial" placeholder="A value of" required>
+            <input type="number" id="calc03_final" placeholder="that INCREASED to" required>
+            <button onclick="calculate03()">Calculate</button>
+            <div class="result" id="calc03_result"></div>
+        </div>
+
+        <!-- Calculator 04 -->
+        <div class="calculator-box">
+            <h2>Calculator 04</h2>
+            <input type="number" id="calc04_initial" placeholder="A value of" required>
+            <input type="number" id="calc04_final" placeholder="that DECREASED to" required>
+            <button onclick="calculate04()">Calculate</button>
+            <div class="result" id="calc04_result"></div>
+        </div>
+
+        <!-- Calculator 05 -->
+        <div class="calculator-box">
+            <h2>Calculator 05</h2>
+            <input type="number" id="calc05_value" placeholder="The value" required>
+            <input type="number" id="calc05_total" placeholder="equivalent to how many %" required>
+            <button onclick="calculate05()">Calculate</button>
+            <div class="result" id="calc05_result"></div>
+        </div>
+
+        <!-- Calculator 06 -->
+        <div class="calculator-box">
+            <h2>Calculator 06</h2>
+            <input type="number" id="calc06_value" placeholder="I have a value of" required>
+            <input type="number" id="calc06_increase" placeholder="and I want to INCREASE %" required>
+            <button onclick="calculate06()">Calculate</button>
+            <div class="result" id="calc06_result"></div>
+        </div>
+
+        <!-- Calculator 07 -->
+        <div class="calculator-box">
+            <h2>Calculator 07</h2>
+            <input type="number" id="calc07_value" placeholder="I have a value of" required>
+            <input type="number" id="calc07_decrease" placeholder="and I want to DECREASE %" required>
+            <button onclick="calculate07()">Calculate</button>
+            <div class="result" id="calc07_result"></div>
+        </div>
+
+        <!-- Calculator 08 -->
+        <div class="calculator-box">
+            <h2>Calculator 08</h2>
+            <input type="number" id="calc08_increase" placeholder="I have an initial value that INCREASED by %" required>
+            <input type="number" id="calc08_final" placeholder="and passed to" required>
+            <button onclick="calculate08()">Calculate</button>
+            <div class="result" id="calc08_result"></div>
+        </div>
+
+        <!-- Calculator 09 -->
+        <div class="calculator-box">
+            <h2>Calculator 09</h2>
+            <input type="number" id="calc09_decrease" placeholder="I have an initial value that DECREASED by %" required>
+            <input type="number" id="calc09_final" placeholder="and passed to" required>
+            <button onclick="calculate09()">Calculate</button>
+            <div class="result" id="calc09_result"></div>
+        </div>
+
+        <!-- Calculator 10 -->
+        <div class="calculator-box">
+            <h2>Calculator 10</h2>
+            <input type="number" id="calc10_value" placeholder="I have a value of" required>
+            <input type="number" id="calc10_target" placeholder="and I want to INCREASE to" required>
+            <button onclick="calculate10()">Calculate</button>
+            <div class="result" id="calc10_result"></div>
+        </div>
+
+        <!-- Calculator 11 -->
+        <div class="calculator-box">
+            <h2>Calculator 11</h2>
+            <input type="number" id="calc11_value" placeholder="I have a value of" required>
+            <input type="number" id="calc11_target" placeholder="and I want to DECREASE to" required>
+            <button onclick="calculate11()">Calculate</button>
+            <div class="result" id="calc11_result"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculate01() {
+            const value = parseFloat(document.getElementById("calc01_value").value);
+            const percent = parseFloat(document.getElementById("calc01_percent").value);
+            const result = (value * percent) / 100;
+            document.getElementById("calc01_result").innerText = `Result: ${result.toFixed(2)}`;
+        }
+
+        function calculate02() {
+            const value = parseFloat(document.getElementById("calc02_value").value);
+            const total = parseFloat(document.getElementById("calc02_total").value);
+            const result = (value / total) * 100;
+            document.getElementById("calc02_result").innerText = `Result: ${result.toFixed(2)}%`;
+        }
+
+        function calculate03() {
+            const initial = parseFloat(document.getElementById("calc03_initial").value);
+            const final = parseFloat(document.getElementById("calc03_final").value);
+            const result = ((final - initial) / initial) * 100;
+            document.getElementById("calc03_result").innerText = `Percentage Increase: ${result.toFixed(2)}%`;
+        }
+
+        function calculate04() {
+            const initial = parseFloat(document.getElementById("calc04_initial").value);
+            const final = parseFloat(document.getElementById("calc04_final").value);
+            const result = ((initial - final) / initial) * 100;
+            document.getElementById("calc04_result").innerText = `Percentage Decrease: ${result.toFixed(2)}%`;
+        }
+
+        function calculate05() {
+            const value = parseFloat(document.getElementById("calc05_value").value);
+            const total = parseFloat(document.getElementById("calc05_total").value);
+            const result = (value / total) * 100;
+            document.getElementById("calc05_result").innerText = `Result: ${result.toFixed(2)}%`;
+        }
+
+        function calculate06() {
+            const value = parseFloat(document.getElementById("calc06_value").value);
+            const increase = parseFloat(document.getElementById("calc06_increase").value);
+            const result = value + (value * (increase / 100));
+            document.getElementById("calc06_result").innerText = `Result: ${result.toFixed(2)}`;
+        }
+
+        function calculate07() {
+            const value = parseFloat(document.getElementById("calc07_value").value);
+            const decrease = parseFloat(document.getElementById("calc07_decrease").value);
+            const result = value - (value * (decrease / 100));
+            document.getElementById("calc07_result").innerText = `Result: ${result.toFixed(2)}`;
+        }
+
+        function calculate08() {
+            const increase = parseFloat(document.getElementById("calc08_increase").value);
+            const final = parseFloat(document.getElementById("calc08_final").value);
+            const initial = final / (1 + (increase / 100));
+            document.getElementById("calc08_result").innerText = `Initial Value: ${initial.toFixed(2)}`;
+        }
+
+        function calculate09() {
+            const decrease = parseFloat(document.getElementById("calc09_decrease").value);
+            const final = parseFloat(document.getElementById("calc09_final").value);
+            const initial = final / (1 - (decrease / 100));
+            document.getElementById("calc09_result").innerText = `Initial Value: ${initial.toFixed(2)}`;
+        }
+
+        function calculate10() {
+            const value = parseFloat(document.getElementById("calc10_value").value);
+            const target = parseFloat(document.getElementById("calc10_target").value);
+            const result = ((target - value) / value) * 100;
+            document.getElementById("calc10_result").innerText = `Percentage to Add: ${result.toFixed(2)}%`;
+        }
+
+        function calculate11() {
+            const value = parseFloat(document.getElementById("calc11_value").value);
+            const target = parseFloat(document.getElementById("calc11_target").value);
+            const result = ((value - target) / value) * 100;
+            document.getElementById("calc11_result").innerText = `Percentage to Subtract: ${result.toFixed(2)}%`;
+        }
+    </script>
+</body>
+</html>

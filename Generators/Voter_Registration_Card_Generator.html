@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Registration Card Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #registrationDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            height: 30px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .generate-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+
+        .generate-copy-btn {
+            background-color: #e1ad41;
+            color: white;
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #d29f3d;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .punctuate-checkbox {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Voter Registration Card Generator</h1>
+        <p>Create as many Voter Registration Numbers as you want by clicking the "Generate Voter 
+            Registration Number" button. You can also customize your number using the filter below! 
+            Also check out our <a href="/validators/validate-voter_registration .html">Validate Voter Registration Number.</a></p>
+        
+        <label for="stateSelector">State of origin of the Voter Registration Card:</label>
+        <select id="stateSelector">
+            <option value="BR" data-prefix="61">BR</option>
+            <option value="AC" data-prefix="68">AC</option>
+            <option value="AL" data-prefix="82">AL</option>
+            <option value="AP" data-prefix="83">AP</option>
+            <option value="BA" data-prefix="71">BA</option>
+            <option value="CE" data-prefix="85">CE</option>
+            <option value="DF" data-prefix="61">DF</option>
+            <option value="ES" data-prefix="27">ES</option>
+            <option value="GO" data-prefix="62">GO</option>
+            <option value="MA" data-prefix="98">MA</option>
+            <option value="MT" data-prefix="65">MT</option>
+            <option value="MS" data-prefix="67">MS</option>
+            <option value="MG" data-prefix="31">MG</option>
+            <option value="PA" data-prefix="91">PA</option>
+            <option value="PB" data-prefix="83">PB</option>
+            <option value="PR" data-prefix="41">PR</option>
+            <option value="PE" data-prefix="81">PE</option>
+            <option value="PI" data-prefix="86">PI</option>
+            <option value="RJ" data-prefix="21">RJ</option>
+            <option value="RN" data-prefix="84">RN</option>
+            <option value="RS" data-prefix="51">RS</option>
+            <option value="RO" data-prefix="69">RO</option>
+            <option value="RR" data-prefix="95">RR</option>
+            <option value="SC" data-prefix="48">SC</option>
+            <option value="SP" data-prefix="11">SP</option>
+            <option value="SE" data-prefix="79">SE</option>
+            <option value="TO" data-prefix="63">TO</option>
+        </select>
+
+        <div class="punctuate-checkbox">
+            <input type="checkbox" id="punctuateCheckbox" onchange="togglePunctuation()"> <!-- Trigger on change -->
+            <label for="punctuateCheckbox">Add Punctuate</label>
+        </div>
+
+        <button class="button generate-btn" onclick="generateRegistrationNumber()">Generate Voter Registration Number</button>
+        <button class="button copy-btn" onclick="copyRegistrationNumber()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+
+        <div id="registrationDisplay"></div>
+    </div>
+
+    <script>
+        let currentNumber = ''; // To hold the current generated number
+
+        // Function to generate a random Voter Registration Number with a state prefix
+        function generateRegistrationNumber() {
+            const stateSelector = document.getElementById("stateSelector");
+            const selectedOption = stateSelector.options[stateSelector.selectedIndex];
+            const prefix = selectedOption.getAttribute("data-prefix"); // Get the prefix for the selected state
+
+            const numberPart = Math.floor(1000000000 + Math.random() * 9000000000); // Generate random 10-digit number
+            currentNumber = prefix + String(numberPart); // Store the number without punctuation first
+
+            togglePunctuation(); // Apply punctuation if checkbox is ticked
+        }
+
+        // Function to toggle punctuation based on the checkbox state
+        function togglePunctuation() {
+            let displayNumber = currentNumber;
+
+            // Check if the "Add Punctuate" checkbox is checked
+            if (document.getElementById("punctuateCheckbox").checked) {
+                displayNumber = displayNumber.replace(/(\d{4})(\d{4})(\d{4})/, '$1-$2-$3'); // Add dashes
+            }
+
+            document.getElementById("registrationDisplay").innerText = displayNumber; // Display the formatted or unformatted number
+        }
+
+        // Function to copy the displayed registration number to the clipboard
+        function copyRegistrationNumber() {
+            const regText = document.getElementById("registrationDisplay").innerText; // Get the registration number text
+            
+            // Create a temporary input element to hold the registration number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = regText; // Set the input value to the registration number text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the registration number has been copied
+            alert("Copied: " + regText);
+        }
+
+        // Function to generate registration number and copy it to the clipboard
+        function generateAndCopy() {
+            generateRegistrationNumber(); // Generate registration number
+            copyRegistrationNumber(); // Copy the generated registration number
+        }
+    </script>
+</body>
+</html>

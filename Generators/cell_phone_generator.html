@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cell Phone Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+        .container h1 {
+            font-size: 22px;
+        }
+        .code-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            word-wrap: break-word;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+        #copyButton {
+            background-color: #28a745;
+        }
+        #copyButton:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Cell Phone Number Generator</h1>
+
+        <!-- Country code selection -->
+        <div>
+            <label for="countryCode">Country Code:</label>
+            <select id="countryCode">
+                <option value="+1" data-start="5">USA (+1)</option>
+                <option value="+44" data-start="7">UK (+44)</option>
+                <option value="+91" data-start="9">India (+91)</option>
+                <option value="+81" data-start="0">Japan (+81)</option>
+                <option value="+49" data-start="1">Germany (+49)</option>
+                <option value="+92" data-start="3">Pakistan (+92)</option>
+            </select>
+        </div>
+
+        <!-- Display generated phone number -->
+        <div class="code-display" id="phoneNumber">Click Generate Number</div>
+
+        <!-- Buttons -->
+        <button onclick="generatePhoneNumber()">Generate Number</button>
+        <button id="copyButton" onclick="copyToClipboard()">Copy</button>
+    </div>
+
+    <script>
+        // Function to generate a random phone number
+        function generatePhoneNumber() {
+            const countryCode = document.getElementById("countryCode").value;
+            const startDigit = document.getElementById("countryCode").selectedOptions[0].getAttribute('data-start');
+            let number = startDigit; // Start with the specific starting digit
+
+            // Generate random digits for the phone number
+            for (let i = 1; i < 10; i++) { // Generate 9 more digits
+                number += Math.floor(Math.random() * 10);
+            }
+
+            // Display the generated phone number
+            document.getElementById("phoneNumber").innerText = `${countryCode} ${formatPhoneNumber(number)}`;
+        }
+
+        // Function to format the phone number into a more readable format
+        function formatPhoneNumber(number) {
+            return number.replace(/(.{3})(.{3})(.{4})/, '$1-$2-$3'); // Format: XXX-XXX-XXXX
+        }
+
+        // Function to copy the generated number to the clipboard
+        function copyToClipboard() {
+            const number = document.getElementById("phoneNumber").innerText;
+            
+            // Create a temporary input element to hold the number
+            const tempInput = document.createElement("input");
+            tempInput.value = number;
+            document.body.appendChild(tempInput);
+            
+            // Select the text and copy it
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+
+            // Alert to inform the user that the number has been copied
+            alert("Copied: " + number);
+        }
+    </script>
+
+</body>
+</html>

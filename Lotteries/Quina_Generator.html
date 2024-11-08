@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quina Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Button colors */
+        .generate-btn {
+            background-color: #007bff; /* Blue color */
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .generate-copy-btn {
+            background-color: #d95f0e; /* Rust color */
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #c95b0e; /* Darker rust on hover */
+        }
+
+        #result {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quina Generator</h1>
+        <p>Compete for great prizes with Quina: just mark 5 to 15 numbers from the 80 available on the ticket. 
+            Also check out our <a href="/Latest Lottery Results/Latest_Quina_Results.html">Latest Quina Results</a>.</p>
+
+        <button class="button generate-btn" onclick="generateQuina()">Generate Quina Numbers</button>
+        <button class="button copy-btn" onclick="copyDetails()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function generateQuina() {
+            const resultDiv = document.getElementById('result'); // Result display element
+            
+            // Generate random unique numbers
+            const quinaNumbers = new Set();
+            const quantity = Math.floor(Math.random() * (15 - 5 + 1)) + 5; // Random number between 5 and 15
+            while (quinaNumbers.size < quantity) {
+                const randomNum = Math.floor(Math.random() * 80) + 1; // Random number between 1 and 80
+                quinaNumbers.add(randomNum); // Add to set (automatically handles uniqueness)
+            }
+            
+            // Convert set to array and sort it
+            const sortedNumbers = Array.from(quinaNumbers).sort((a, b) => a - b);
+            
+            // Display the results
+            resultDiv.innerText = `Your Quina Numbers: ${sortedNumbers.join(', ')}`;
+        }
+
+        // Function to copy the displayed lucky numbers to the clipboard
+        function copyDetails() {
+            const resultText = document.getElementById("result").innerText; // Get the displayed lucky numbers
+            
+            // Create a temporary input element to hold the text for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = resultText; // Set the input value to the displayed text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the details have been copied
+            alert("Copied: " + resultText);
+        }
+
+        // Function to generate Quina numbers and copy them to the clipboard
+        function generateAndCopy() {
+            generateQuina(); // Generate lucky numbers
+            copyDetails(); // Copy the generated lucky numbers
+        }
+    </script>
+</body>
+</html>

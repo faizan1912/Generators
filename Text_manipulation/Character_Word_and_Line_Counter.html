@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character, Word, and Line Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #007bff; /* Blue color for the results */
+        }
+
+        .result p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Character, Word, and Line Counter</h1>
+        <p>Type or paste text into the field below to count characters, words, lines, and more!</p>
+
+        <textarea id="textInput" oninput="updateCounts()" placeholder="Type or paste text to count"></textarea>
+
+        <div class="result">
+            <p>Characters: <span id="charCount">0</span></p>
+            <p>Characters without spaces: <span id="charNoSpaceCount">0</span></p>
+            <p>Words: <span id="wordCount">0</span></p>
+            <p>Spaces: <span id="spaceCount">0</span></p>
+            <p>Lines: <span id="lineCount">0</span></p>
+            <p>Vowels: <span id="vowelCount">0</span></p>
+            <p>Consonants: <span id="consonantCount">0</span></p>
+            <p>Numbers: <span id="numberCount">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        function updateCounts() {
+            const text = document.getElementById("textInput").value; // Get the text input value from the textarea
+
+            // Count total characters including spaces
+            const charCount = text.length;
+            
+            // Count characters excluding spaces
+            const charNoSpaceCount = text.replace(/\s/g, '').length;
+            
+            // Count the number of words (split by spaces or newlines)
+            const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+            
+            // Count the number of spaces
+            const spaceCount = (text.match(/\s/g) || []).length;
+            
+            // Count the number of lines (split by newlines)
+            const lineCount = text.split(/\n/).length;
+            
+            // Count vowels using a regular expression that matches vowels (both uppercase and lowercase)
+            const vowelCount = (text.match(/[aeiouAEIOU]/g) || []).length;
+            
+            // Count consonants using a regular expression that matches consonants (both uppercase and lowercase)
+            const consonantCount = (text.match(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/g) || []).length;
+            
+            // Count numbers using a regular expression that matches digits
+            const numberCount = (text.match(/\d/g) || []).length;
+
+            // Update the HTML content of each result field with the calculated values
+            document.getElementById("charCount").innerText = charCount;
+            document.getElementById("charNoSpaceCount").innerText = charNoSpaceCount;
+            document.getElementById("wordCount").innerText = wordCount;
+            document.getElementById("spaceCount").innerText = spaceCount;
+            document.getElementById("lineCount").innerText = lineCount;
+            document.getElementById("vowelCount").innerText = vowelCount;
+            document.getElementById("consonantCount").innerText = consonantCount;
+            document.getElementById("numberCount").innerText = numberCount;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validate National Health Card (CNS)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Validate button color */
+        .validate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .validate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #cnsResult {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validate National Health Card (CNS)</h1>
+        <p>The National Health Card (CNS) is a numbered document that allows anyone in Brazil to be 
+            identified when using health services. It can be considered a “health ID”. Also check out 
+            our <a href="/Generators/CNS_generator.html">CNS Generator</a>.</p>
+        <input type="text" id="cnsInput" placeholder="Enter the CNS number">
+        <button class="button validate-btn" onclick="validateCNS()">Validate</button>
+        <button class="button copy-btn" onclick="copyCNS()">Copy</button>
+        <div id="cnsResult"></div>
+    </div>
+
+    <script>
+        // Function to validate the CNS number
+        function validateCNS() {
+            const cnsNumber = document.getElementById('cnsInput').value; // Get input value
+            const cnsResult = document.getElementById('cnsResult'); // Result display element
+            
+            // Validate CNS format (example: 15 numeric digits)
+            if (/^\d{15}$/.test(cnsNumber)) {
+                if (cnsLuhnCheck(cnsNumber)) {
+                    cnsResult.innerText = "CNS Number is valid!"; // Display valid message
+                    cnsResult.style.color = "green"; // Change text color to green
+                } else {
+                    cnsResult.innerText = "Invalid CNS Number!"; // Display invalid message
+                    cnsResult.style.color = "red"; // Change text color to red
+                }
+            } else {
+                cnsResult.innerText = "Please enter a valid 15-digit CNS number."; // Error message for invalid format
+                cnsResult.style.color = "red"; // Change text color to red
+            }
+        }
+
+        // Function to copy the CNS number to the clipboard
+        function copyCNS() {
+            const cnsNumber = document.getElementById('cnsInput').value; // Get input value
+
+            if (cnsNumber) {
+                // Create a temporary input element to hold the CNS number for copying
+                const tempInput = document.createElement("input");
+                tempInput.value = cnsNumber; // Set the input value to the CNS number
+                document.body.appendChild(tempInput); // Append the input to the document body
+                
+                // Select the text in the input and copy it to the clipboard
+                tempInput.select();
+                document.execCommand("copy");
+                
+                // Remove the temporary input element after copying
+                document.body.removeChild(tempInput);
+
+                alert("Copied: " + cnsNumber); // Notify the user that the number has been copied
+            } else {
+                alert("Please enter a CNS number to copy."); // Alert if input is empty
+            }
+        }
+
+        // Example Luhn algorithm check for CNS (simplified for the example)
+        function cnsLuhnCheck(cnsNumber) {
+            // Implement the actual Luhn algorithm check or validation method for CNS here
+            // This is a placeholder that returns true for any number
+            return true;
+        }
+    </script>
+</body>
+</html>

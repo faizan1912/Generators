@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZIP Code Generator - Pakistan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        #zipCodeDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Generate button color */
+        .generate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Generate & Copy button color */
+        .generate-copy-btn {
+            background-color: #e1ad41; /* Mustard color */
+            color: white;
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #d29f3d; /* Darker mustard on hover */
+        }
+
+        .description {
+            margin-bottom: 20px;
+        }
+
+        .description a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .description a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Description Section -->
+        <div class="description">
+            <h2>ZIP Code Generator</h2>
+            <p>Generate ZIP codes for all of Brazil here. To do so, simply click on "Generate ZIP Code". Use the filter below to choose the state where the ZIP code will be generated. Also check out our 
+            <a href="/validators/validate_zip_code.html">Search/Validate ZIP Code</a>.</p>
+        </div>
+
+        <h1>ZIP Code Generator - Pakistan</h1>
+        <select id="citySelector">
+            <option value="">Select a city</option>
+            <option value="Karachi">Karachi</option>
+            <option value="Lahore">Lahore</option>
+            <option value="Islamabad">Islamabad</option>
+            <option value="Peshawar">Peshawar</option>
+            <option value="Quetta">Quetta</option>
+            <option value="Multan">Multan</option>
+            <option value="Faisalabad">Faisalabad</option>
+            <option value="Rawalpindi">Rawalpindi</option>
+            <option value="Gujranwala">Gujranwala</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Sialkot">Sialkot</option>
+        </select>
+
+        <div id="zipCodeDisplay"></div>
+
+        <button class="button generate-btn" onclick="generateZipCode()">Generate</button>
+        <button class="button copy-btn" onclick="copyDetails()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Object containing city names and their corresponding ZIP codes
+        const zipCodes = {
+            "Karachi": "74000",
+            "Lahore": "54000",
+            "Islamabad": "44000",
+            "Peshawar": "25000",
+            "Quetta": "87300",
+            "Multan": "60000",
+            "Faisalabad": "38000",
+            "Rawalpindi": "46000",
+            "Gujranwala": "52200",
+            "Hyderabad": "71000",
+            "Sialkot": "39350"
+        };
+
+        // Function to display the ZIP code based on selected city
+        function generateZipCode() {
+            const city = document.getElementById("citySelector").value; // Get the selected city from dropdown
+            const zipCodeDisplay = document.getElementById("zipCodeDisplay"); // Get the display element for ZIP code
+            if (city) { // If a city is selected
+                zipCodeDisplay.innerText = `ZIP Code: ${zipCodes[city]}`; // Display the corresponding ZIP code
+            } else {
+                zipCodeDisplay.innerText = ''; // Clear the display if no city is selected
+            }
+        }
+
+        // Function to copy the displayed ZIP code details to the clipboard
+        function copyDetails() {
+            const zipCodeText = document.getElementById("zipCodeDisplay").innerText; // Get the ZIP code text
+            
+            // Create a temporary input element to hold the ZIP code for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = zipCodeText; // Set the input value to the ZIP code text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the ZIP code has been copied
+            alert("Copied: " + zipCodeText);
+        }
+
+        // Function to generate ZIP code and copy it to the clipboard
+        function generateAndCopy() {
+            generateZipCode(); // Generate ZIP code
+            copyDetails(); // Copy the generated ZIP code
+        }
+    </script>
+</body>
+</html>

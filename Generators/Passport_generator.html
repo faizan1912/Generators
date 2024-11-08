@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passport Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #passportNumberDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0; /* Space for the passport number */
+            height: 30px; /* Fixed height to keep space */
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Generate button color */
+        .generate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Generate & Copy button color */
+        .generate-copy-btn {
+            background-color: #e1ad41; /* Mustard color */
+            color: white;
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #d29f3d; /* Darker mustard on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Passport Generator</h1>
+        <p>Click the button below to generate a fake passport number, following the same format used to obtain passports in Brazil today.</p>
+        <div id="passportNumberDisplay"></div> <!-- Space for the generated passport number -->
+        <button class="button generate-btn" onclick="generatePassportNumber()">Generate Passport Number</button>
+        <button class="button copy-btn" onclick="copyDetails()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Function to generate a random Brazilian passport number
+        function generatePassportNumber() {
+            const passportNumber = generateBrazilPassportNumber();
+            // Display generated passport number
+            const passportNumberDisplay = document.getElementById("passportNumberDisplay");
+            passportNumberDisplay.innerText = passportNumber; // Show generated passport number
+        }
+
+        // Function to generate a random passport number in the format used in Brazil
+        function generateBrazilPassportNumber() {
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Letters to use in the passport number
+            const numberPart = Math.floor(Math.random() * 10000000); // Random number part
+            const letterPart = letters.charAt(Math.floor(Math.random() * letters.length)); // Random letter part
+            return `${letterPart}${numberPart}`; // Format: A1234567
+        }
+
+        // Function to copy the displayed passport number to the clipboard
+        function copyDetails() {
+            const passportText = document.getElementById("passportNumberDisplay").innerText; // Get the passport text
+            
+            // Create a temporary input element to hold the passport number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = passportText; // Set the input value to the passport text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the passport number has been copied
+            alert("Copied: " + passportText);
+        }
+
+        // Function to generate passport number and copy it to the clipboard
+        function generateAndCopy() {
+            generatePassportNumber(); // Generate passport number
+            copyDetails(); // Copy the generated passport number
+        }
+    </script>
+</body>
+</html>

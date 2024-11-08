@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIS/PASEP Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px; /* Slightly wider for better layout */
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #pisDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0; /* Space for the generated PIS/PASEP number */
+            height: 30px; /* Fixed height to keep space */
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Generate button color */
+        .generate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Generate & Copy button color */
+        .generate-copy-btn {
+            background-color: #e1ad41; /* Mustard color */
+            color: white;
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #d29f3d; /* Darker mustard on hover */
+        }
+
+        /* Additional styling for checkbox */
+        .checkbox-container {
+            margin: 20px 0; /* Space above the checkbox */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PIS/PASEP Generator</h1>
+        <p>Create as many PIS/PASEP numbers as you want by clicking the "Generate PIS/PASEP" button!
+             Also check out our <a href="/validators/Validate_PIS_PASEP.html"> Validate PIS/PASEP.</a></p>
+        
+        <div id="pisDisplay"></div> <!-- Space for the generated PIS/PASEP number -->
+        
+        <div class="checkbox-container">
+            <input type="checkbox" id="punctuateCheckbox" onclick="togglePunctuation()">
+            <label for="punctuateCheckbox">Add Punctuation</label>
+        </div>
+
+        <button class="button generate-btn" onclick="generatePisNumber()">Generate PIS/PASEP</button>
+        <button class="button copy-btn" onclick="copyDetails()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+    </div>
+
+    <script>
+        let addPunctuation = false; // Flag to track punctuation
+
+        // Function to generate random PIS/PASEP number
+        function generatePisNumber() {
+            const pisNumber = generateRandomPis();
+            // Display generated PIS/PASEP number
+            const pisDisplay = document.getElementById("pisDisplay");
+            pisDisplay.innerText = addPunctuation ? addPunctuationToPis(pisNumber) : pisNumber; // Show generated PIS/PASEP number
+        }
+
+        // Function to generate a random 11-digit number for PIS/PASEP
+        function generateRandomPis() {
+            const numberPart = Math.floor(Math.random() * 100000000000); // Random number part
+            return numberPart.toString().padStart(11, '0'); // Ensure it is 11 digits
+        }
+
+        // Function to add punctuation to the generated PIS/PASEP number
+        function addPunctuationToPis(pis) {
+            return pis.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4'); // Add punctuation format
+        }
+
+        // Function to copy the displayed PIS/PASEP number to the clipboard
+        function copyDetails() {
+            const pisText = document.getElementById("pisDisplay").innerText; // Get the PIS/PASEP text
+            
+            // Create a temporary input element to hold the PIS/PASEP number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = pisText; // Set the input value to the PIS/PASEP text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the PIS/PASEP number has been copied
+            alert("Copied: " + pisText);
+        }
+
+        // Function to generate PIS/PASEP number and copy it to the clipboard
+        function generateAndCopy() {
+            generatePisNumber(); // Generate PIS/PASEP number
+            copyDetails(); // Copy the generated PIS/PASEP number
+        }
+
+        // Toggle punctuation based on checkbox
+        function togglePunctuation() {
+            addPunctuation = document.getElementById("punctuateCheckbox").checked;
+            if (addPunctuation) {
+                // Update displayed number with punctuation if already generated
+                const currentPis = document.getElementById("pisDisplay").innerText;
+                if (currentPis) {
+                    document.getElementById("pisDisplay").innerText = addPunctuationToPis(currentPis);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

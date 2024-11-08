@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver's License Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block; /* Align buttons in a single line */
+        }
+
+        #generateButton {
+            background-color: #007bff; /* Blue color */
+        }
+
+        #generateButton:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        #copyButton {
+            background-color: #28a745; /* Green color */
+        }
+
+        #copyButton:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        #generateAndCopyButton {
+            background-color: #856404; /* Mustard dark color */
+        }
+
+        #generateAndCopyButton:hover {
+            background-color: #7c6c00; /* Darker mustard on hover */
+        }
+
+        #licenseDisplay {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center the buttons */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Driver's License Generator</h1>
+        <p>Create as many driver's license numbers as you want by clicking the "Generate License Number" 
+            button!</p>
+        <p>Also check out our <a href="/validators/Validate_driver's_license.html" style="color: #007bff; text-decoration: none;">Validate Driver's License</a>.</p>
+
+        <div id="licenseDisplay"></div>
+        
+        <!-- Button container for single row alignment -->
+        <div class="button-container">
+            <button id="generateButton">Generate License Number</button>
+            <button id="copyButton">Copy to Clipboard</button>
+            <button id="generateAndCopyButton" onclick="generateAndCopy()">Generate & Copy</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to generate a random driver's license number
+        function generateLicenseNumber() {
+            const randomPart = Math.floor(Math.random() * 1000000).toString().padStart(6, '0'); // 6 random digits
+            const stateCode = getRandomStateCode(); // Get random state code
+            return `${stateCode}-${randomPart}`; // Combine state code and random part
+        }
+
+        // Function to get a random state code
+        function getRandomStateCode() {
+            const states = ["CA", "TX", "FL", "NY", "IL"]; // Example state codes
+            return states[Math.floor(Math.random() * states.length)]; // Randomly select a state code
+        }
+
+        // Function to display the generated license number
+        function displayLicenseNumber() {
+            const licenseNumber = generateLicenseNumber(); // Generate license number
+            document.getElementById("licenseDisplay").innerText = `License Number: ${licenseNumber}`; // Display it
+            return licenseNumber; // Return the generated license number
+        }
+
+        // Function to copy the license number to the clipboard
+        function copyToClipboard(licenseNumber) {
+            // Create a temporary input element to hold the license number
+            const tempInput = document.createElement("input");
+            tempInput.value = licenseNumber; // Set the value to copy
+            document.body.appendChild(tempInput);
+            
+            // Select the text and copy it
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+
+            // Alert to inform the user that the number has been copied
+            alert("Copied: " + licenseNumber);
+        }
+
+        // Function to generate and copy the license number
+        function generateAndCopy() {
+            const licenseNumber = displayLicenseNumber(); // Generate and display the license number
+            copyToClipboard(licenseNumber); // Copy the displayed license number to clipboard
+        }
+
+        // Event listeners for buttons
+        document.getElementById("generateButton").onclick = displayLicenseNumber; // Generate button
+        document.getElementById("copyButton").onclick = function() {
+            const licenseNumber = document.getElementById("licenseDisplay").innerText.replace('License Number: ', ''); // Get displayed license number
+            if (licenseNumber) {
+                copyToClipboard(licenseNumber); // Copy to clipboard if there is a license number displayed
+            } else {
+                alert("Please generate a license number first."); // Alert if no license number is generated
+            }
+        }; // Copy button
+    </script>
+</body>
+</html>

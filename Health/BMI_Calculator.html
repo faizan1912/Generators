@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .input-field {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff; /* Blue color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 15px;
+            color: #2d72d9;
+        }
+        .classification {
+            margin-top: 20px;
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff0000; /* Red color for highlighted classification */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>BMI Calculator</h2>
+        <div class="input-field">
+            <p>Height (m)</p>
+            <input type="number" id="height" placeholder="Ex: 1.72" step="0.01">
+        </div>
+        <div class="input-field">
+            <p>Weight (kg)</p>
+            <input type="number" id="weight" placeholder="Ex: 70" step="0.1">
+        </div>
+        
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div class="result" id="resultDisplay"></div>
+        
+        <div class="classification">
+            <h3>BMI Classification Chart</h3>
+            <table style="width:100%; border-collapse: collapse;">
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Classification</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">BMI</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" id="underweight">Underweight</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">Below 18.5</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" id="ideal">Ideal weight</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">Between 18.6 and 24.9</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" id="slightly-overweight">Slightly overweight</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">Between 25.0 and 29.9</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" id="grade-i-obesity">Grade I obesity</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">Between 30.0 and 34.9</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" id="grade-ii-obesity">Grade II obesity (severe)</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">Between 35.0 and 39.9</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;" id="grade-iii-obesity">Grade III obesity (morbid)</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">Over 40</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const resultDisplay = document.getElementById('resultDisplay');
+
+            // Reset highlights
+            document.querySelectorAll('.classification td').forEach(td => {
+                td.classList.remove('highlight');
+            });
+
+            if (!isNaN(height) && !isNaN(weight) && height > 0 && weight > 0) {
+                const bmi = (weight / (height * height)).toFixed(2);
+                resultDisplay.textContent = `Your BMI is: ${bmi}`;
+
+                // Highlight the relevant classification
+                if (bmi < 18.5) {
+                    document.getElementById('underweight').classList.add('highlight');
+                } else if (bmi >= 18.6 && bmi <= 24.9) {
+                    document.getElementById('ideal').classList.add('highlight');
+                } else if (bmi >= 25.0 && bmi <= 29.9) {
+                    document.getElementById('slightly-overweight').classList.add('highlight');
+                } else if (bmi >= 30.0 && bmi <= 34.9) {
+                    document.getElementById('grade-i-obesity').classList.add('highlight');
+                } else if (bmi >= 35.0 && bmi <= 39.9) {
+                    document.getElementById('grade-ii-obesity').classList.add('highlight');
+                } else if (bmi > 40) {
+                    document.getElementById('grade-iii-obesity').classList.add('highlight');
+                }
+            } else {
+                resultDisplay.textContent = '';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px; /* Adjusted width */
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #phoneDisplay {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0; /* Space for the generated phone number */
+            height: 30px; /* Fixed height to keep space */
+        }
+
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Generate button color */
+        .generate-btn {
+            background-color: #007bff; /* Blue color */
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Copy button color */
+        .copy-btn {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Generate & Copy button color */
+        .generate-copy-btn {
+            background-color: #e1ad41; /* Mustard color */
+            color: white;
+        }
+
+        .generate-copy-btn:hover {
+            background-color: #d29f3d; /* Darker mustard on hover */
+        }
+
+        /* Style for the state selector */
+        select {
+            width: 100%; /* Full width */
+            padding: 10px; /* Padding for better appearance */
+            margin: 10px 0; /* Margin for spacing */
+            border-radius: 5px; /* Rounded corners */
+            border: 1px solid #ccc; /* Border style */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phone Number Generator</h1>
+        <p>Create as many phone numbers as you want by clicking the "Generate Number" button! You can even choose the state of the number if you wish.</p>
+        
+        <div id="phoneDisplay"></div> <!-- Space for the generated phone number -->
+        
+        <label for="stateSelector">Select State:</label>
+        <select id="stateSelector">
+            <option value="BR" data-prefix="61">BR</option>
+            <option value="AC" data-prefix="68">AC</option>
+            <option value="AL" data-prefix="82">AL</option>
+            <option value="AP" data-prefix="83">AP</option>
+            <option value="BA" data-prefix="71">BA</option>
+            <option value="CE" data-prefix="85">CE</option>
+            <option value="DF" data-prefix="61">DF</option>
+            <option value="ES" data-prefix="27">ES</option>
+            <option value="GO" data-prefix="62">GO</option>
+            <option value="MA" data-prefix="98">MA</option>
+            <option value="MT" data-prefix="65">MT</option>
+            <option value="MS" data-prefix="67">MS</option>
+            <option value="MG" data-prefix="31">MG</option>
+            <option value="PA" data-prefix="91">PA</option>
+            <option value="PB" data-prefix="83">PB</option>
+            <option value="PR" data-prefix="41">PR</option>
+            <option value="PE" data-prefix="81">PE</option>
+            <option value="PI" data-prefix="86">PI</option>
+            <option value="RJ" data-prefix="21">RJ</option>
+            <option value="RN" data-prefix="84">RN</option>
+            <option value="RS" data-prefix="51">RS</option>
+            <option value="RO" data-prefix="69">RO</option>
+            <option value="RR" data-prefix="95">RR</option>
+            <option value="SC" data-prefix="48">SC</option>
+            <option value="SP" data-prefix="11">SP</option>
+            <option value="SE" data-prefix="79">SE</option>
+            <option value="TO" data-prefix="63">TO</option>
+        </select>
+
+        <button class="button generate-btn" onclick="generatePhoneNumber()">Generate Number</button>
+        <button class="button copy-btn" onclick="copyPhoneNumber()">Copy</button>
+        <button class="button generate-copy-btn" onclick="generateAndCopy()">Generate & Copy</button>
+    </div>
+
+    <script>
+        // Function to generate a random phone number
+        function generatePhoneNumber() {
+            const stateSelect = document.getElementById("stateSelector"); // Get the state selector
+            const selectedOption = stateSelect.options[stateSelect.selectedIndex]; // Get the selected option
+            const stateCode = selectedOption.value; // Get the state code
+            const prefix = selectedOption.getAttribute("data-prefix"); // Get the corresponding prefix
+            const numberPart = Math.floor(Math.random() * 10000000); // Generate a random 7-digit number
+            const formattedNumber = `(${prefix}) ${String(numberPart).padStart(4, '0')}-${String(numberPart).padStart(4, '0').slice(4)}`; // Format: (XX) XXXX-XXXX
+            document.getElementById("phoneDisplay").innerText = formattedNumber; // Display generated phone number
+        }
+
+        // Function to copy the displayed phone number to the clipboard
+        function copyPhoneNumber() {
+            const phoneText = document.getElementById("phoneDisplay").innerText; // Get the phone number text
+            
+            // Create a temporary input element to hold the phone number for copying
+            const tempInput = document.createElement("input");
+            tempInput.value = phoneText; // Set the input value to the phone number text
+            document.body.appendChild(tempInput); // Append the input to the document body
+            
+            // Select the text in the input and copy it to the clipboard
+            tempInput.select();
+            document.execCommand("copy");
+
+            // Remove the temporary input element after copying
+            document.body.removeChild(tempInput);
+
+            // Display an alert to notify the user that the phone number has been copied
+            alert("Copied: " + phoneText);
+        }
+
+        // Function to generate phone number and copy it to the clipboard
+        function generateAndCopy() {
+            generatePhoneNumber(); // Generate phone number
+            copyPhoneNumber(); // Copy the generated phone number
+        }
+    </script>
+</body>
+</html>
